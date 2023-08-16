@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Building : MonoBehaviour, IDamageable, IRepairable
@@ -10,6 +11,9 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
 
     [SerializeField] private float buildRate = 10f;
 
+    public event Action<Building> OnBuildingDestroyed;
+
+
     private void Awake()
     {
         CurrentHealth = 0.01f;
@@ -20,6 +24,11 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
         if (isBuilding && CurrentHealth < maxHealth)
         {
             Repair(buildRate * Time.deltaTime);
+        }
+
+        if(CurrentHealth <= 0)
+        {
+            OnBuildingDestroyed?.Invoke(this);
         }
     }
 

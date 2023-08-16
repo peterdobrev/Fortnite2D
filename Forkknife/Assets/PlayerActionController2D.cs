@@ -14,6 +14,7 @@ public class PlayerActionController2D : MonoBehaviour
     public UnityEvent onWallKeyPressed;
     public UnityEvent onFloorKeyPressed;
     public UnityEvent onRampKeyPressed;
+    public UnityEvent onReversedRampKeyPressed;
     public UnityEvent onSlot1KeyPressed;
     public UnityEvent onSlot2KeyPressed;
     public UnityEvent onSlot3KeyPressed;
@@ -49,6 +50,11 @@ public class PlayerActionController2D : MonoBehaviour
             buildingHandler.SelectedStructure = StructureType.Ramp;
             onBuildingMode.Invoke();
         });
+        onReversedRampKeyPressed.AddListener(() =>
+        {
+            buildingHandler.SelectedStructure = StructureType.ReversedRamp;
+            onBuildingMode.Invoke();
+        });
         onSlot1KeyPressed.AddListener(() =>
         {
             onShootingMode.Invoke();
@@ -78,6 +84,10 @@ public class PlayerActionController2D : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.C))
         {
             onRampKeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            onReversedRampKeyPressed.Invoke();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {

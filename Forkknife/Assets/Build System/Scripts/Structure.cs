@@ -4,5 +4,6 @@ public enum StructureType
 {
     Wall,
     Floor,
-    Ramp
+    Ramp,
+    ReversedRamp
 }

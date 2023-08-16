@@ -8,6 +8,5 @@ public class FollowMouse : MonoBehaviour
     {
         Vector2 mousePosition = UtilsClass.GetMouseWorldPosition();
         transform.position = mousePosition;
-        Debug.Log(mousePosition);
     }
 }

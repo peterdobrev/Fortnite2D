@@ -31,6 +31,7 @@ public class BuildSystem
 
     public void Build(StructureType structure, Vector3 worldPosition)
     {
+        Debug.Log($"Requesting build {structure} at {worldPosition}");
         Cell cell = grid.GetGridObject(worldPosition);
 
         if (cell == null)
@@ -54,7 +55,7 @@ public class BuildSystem
             case StructureType.Floor:
                 cell.BottomEdgeNode = node;  
                 break;
-            case StructureType.Ramp:
+            case StructureType.Ramp or StructureType.ReversedRamp:
                 cell.CenterNode = node; 
                 break;
         }
@@ -111,7 +112,7 @@ public class BuildSystem
                 node = cell.BottomEdgeNode;
                 cell.BottomEdgeNode = null;
                 break;
-            case StructureType.Ramp:
+            case StructureType.Ramp or StructureType.ReversedRamp:
                 node = cell.CenterNode;
                 cell.CenterNode = null;
                 break;
@@ -201,6 +202,10 @@ public class BuildSystem
                 {
                     return direction == Vector2Int.left || direction == Vector2Int.up || direction == new Vector2Int(-1, -1);
                 }
+                else if (structure2 == StructureType.ReversedRamp)
+                {
+                    return direction == new Vector2Int(-1, 1) || direction == new Vector2Int(0, -1) || direction == new Vector2Int(-1, 0);
+                }
                 break;
 
             case StructureType.Floor:
@@ -216,6 +221,10 @@ public class BuildSystem
                 {
                     return direction == Vector2Int.right || direction == Vector2Int.down || direction == new Vector2Int(-1, -1);
                 }
+                else if (structure2 == StructureType.ReversedRamp)
+                {
+                    return direction == new Vector2Int(1, -1) || direction == new Vector2Int(0, -1) || direction == new Vector2Int(-1, 0);
+                }
                 break;
 
             case StructureType.Ramp:
@@ -230,6 +239,28 @@ public class BuildSystem
                 else if (structure2 == StructureType.Wall)
                 {
                     return direction == Vector2Int.right || direction == new Vector2Int(1, 1) || direction == Vector2Int.down;
+                }
+                else if (structure2 == StructureType.ReversedRamp)
+                {
+                    return direction == new Vector2Int(0, 1) || direction == new Vector2Int(0, -1) || direction == new Vector2Int(-1, 0) || direction == new Vector2Int(1, 0);
+                }
+                break;
+            case StructureType.ReversedRamp:
+                if (structure2 == StructureType.ReversedRamp)
+                {
+                    return direction == new Vector2Int(-1, 1) || direction == new Vector2Int(1, -1);
+                }
+                else if (structure2 == StructureType.Floor)
+                {
+                    return direction == Vector2Int.up || direction == new Vector2Int(-1, -1) || direction == Vector2Int.right;
+                }
+                else if (structure2 == StructureType.Wall)
+                {
+                    return direction == Vector2Int.right || direction == new Vector2Int(1, -1) || direction == Vector2Int.up;
+                }
+                else if (structure2 == StructureType.Ramp)
+                {
+                    return direction == new Vector2Int(0, 1) || direction == new Vector2Int(0, -1) || direction == new Vector2Int(-1, 0) || direction == new Vector2Int(1, 0);
                 }
                 break;
         }

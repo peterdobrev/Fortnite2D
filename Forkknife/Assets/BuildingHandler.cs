@@ -6,6 +6,10 @@ using UnityEngine.Events;
 
 public class BuildingHandler : MonoBehaviour, IActionHandler
 {
+    private float lastBuildTime; 
+    private const float BUILD_COOLDOWN = 0.1f;
+
+
     public StructureType SelectedStructure { get; set; }
     
     public StructureController structureController;
@@ -16,43 +20,40 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
     {
         Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Time.time - lastBuildTime > BUILD_COOLDOWN)
         {
+            lastBuildTime = Time.time;
+
             Vector3? buildPosition = GetBuildPosition(mousePosition);
-            if (buildPosition != null) 
+            if (buildPosition != null)
             {
-                {
-                    structureController.Build(SelectedStructure, (Vector3)buildPosition);
-                }
+                structureController.Build(SelectedStructure, (Vector3)buildPosition);
             }
-            // Draw a debug ray to the current calculated build position
-            //Debug.DrawRay(transform.position, ((Vector3)buildPosition - transform.position), Color.red);
         }
     }
-
     private Vector3? GetBuildPosition(Vector3 mousePosition)
     {
         var playerCell = GetPlayerCell();
         var mouseCell = GetMouseCell(mousePosition);
 
-        // If the player and the mouse cursor are in the same cell and the selected structure is a Ramp or a Floor, return the player's world position
-        if (playerCell == mouseCell && (SelectedStructure == StructureType.Ramp || SelectedStructure == StructureType.Floor))
-        {
-            return GetWorldPosition(playerCell);
-        }
-
         Vector3 direction = (mousePosition - transform.position).normalized;
 
         // Calculate build cell coordinates based on the direction
         Vector2Int buildCell = playerCell + RoundToInt(direction);
-
-
         buildCell = ApplyStructureSpecificRules(buildCell, playerCell, direction);
 
+        // Check if the potential build position is occupied
         if (structureController.DoesStructureExistAtPosition(AddPositionOffsetBasedOnStructure(SelectedStructure, (Vector2)buildCell)))
         {
             Debug.Log("Is occupied");
             return null;
+        }
+
+        // If the player and the mouse cursor are in the same cell and the selected structure is a Ramp or a Floor, return the player's world position
+        if (playerCell == mouseCell && (SelectedStructure == StructureType.Ramp || SelectedStructure == StructureType.Floor || SelectedStructure == StructureType.ReversedRamp))
+        {
+            if (!structureController.DoesStructureExistAtPosition(AddPositionOffsetBasedOnStructure(SelectedStructure, (Vector2)playerCell)))
+                return GetWorldPosition(playerCell);
         }
 
         if (structureController.buildSystem.grid.IsCellValid(buildCell.x, buildCell.y))
@@ -64,6 +65,7 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
         // If the cell is not valid, return null
         return null;
     }
+
 
     private Vector2Int GetPlayerCell()
     {
@@ -127,12 +129,15 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
             case StructureType.Floor:
                 worldPosition += new Vector3(0.5f, 0, 0);
                 break;
-            case StructureType.Ramp:
+            case StructureType.Ramp or StructureType.ReversedRamp:
                 worldPosition += new Vector3(0.5f, 0.5f, 0);
                 break;
 
         }
         return worldPosition;
     }
+
+
+    
 
 }

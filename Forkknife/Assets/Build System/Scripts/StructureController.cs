@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using JetBrains.Annotations;
-using UnityEngine.UIElements;
 
 public class StructureEventArgs : EventArgs
 {
@@ -40,6 +38,7 @@ public class StructureController : MonoBehaviour
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private GameObject rampPrefab;
+    [SerializeField] private GameObject rampReversedPrefab;
 
     public BuildSystem buildSystem { get; private set; }
 
@@ -58,22 +57,17 @@ public class StructureController : MonoBehaviour
         buildSystem.OnStructureDestroyed += HandleStructureDestroyed;   
     }
 
-    private void Update()
-    {
-        foreach (var structure in structureGameObjects)
-        {
-            if(structure.Value.GetComponent<Building>().CurrentHealth <= 0)
-            {
-                StructureType structureType = structure.Value.GetComponent<Building>().StructureType;
-                Vector2 worldPosition = buildSystem.grid.GetWorldPosition((int)structure.Key.x, (int)structure.Key.y);
-
-                Destroy(structureType, worldPosition);
-            }
-        }
-    }
-
     public void Build(StructureType structure, Vector3 worldPosition)
     {
+        Vector2 offset = CalcPositionOffsetBasedOnStructure(structure);
+        Vector2 pos = (Vector2)worldPosition + offset * cellSize;
+
+        if (structureGameObjects.ContainsKey(pos))
+        {
+            Debug.Log("Building exists at pos");
+            return;
+        }
+
         buildSystem.Build(structure, worldPosition);
     }
 
@@ -97,6 +91,9 @@ public class StructureController : MonoBehaviour
             case StructureType.Ramp:
                 offset = new Vector3(0.5f, 0.5f, 0);
                 break;
+            case StructureType.ReversedRamp:
+                offset = new Vector3(0.5f, 0.5f, 0);
+                break;
 
         }
         return offset;
@@ -109,20 +106,27 @@ public class StructureController : MonoBehaviour
 
         // Ramp should be rotated 45 degrees
         Quaternion quaternion = Quaternion.identity;
-        if(e.Type == StructureType.Ramp)
+        if(e.Type == StructureType.Ramp || e.Type == StructureType.ReversedRamp)
         {
-            quaternion = rampPrefab.transform.rotation;
+            quaternion = structurePrefab.transform.rotation;
         }
 
         Vector2 cellWorldPosition = buildSystem.grid.GetWorldPosition((int)e.Position.x, (int)e.Position.y);
         Vector2 offset = CalcPositionOffsetBasedOnStructure(e.Type);
 
+        // world pos
         var instantiatePosition = cellWorldPosition + offset * buildSystem.grid.CellSize;
-
-        GameObject structureGameObject = Instantiate(structurePrefab, instantiatePosition, quaternion);
+        // key for dict
         var gameObjectsListPos = e.Position + offset;
+        GameObject structureGameObject = Instantiate(structurePrefab, instantiatePosition, quaternion);
+
+        Building buildingComponent = structureGameObject.GetComponent<Building>();
+        buildingComponent.OnBuildingDestroyed += HandleBuildingDestruction;
+
         // Store the game object for future reference
         structureGameObjects[gameObjectsListPos] = structureGameObject;
+        Debug.Log($"Structure ({structure}) built at {gameObjectsListPos} gridpos and {instantiatePosition} worldpos, {cellWorldPosition} gridworldpos");
+
     }
 
     // Destroy the structure GameObject when a structure is destroyed in the build system
@@ -131,13 +135,27 @@ public class StructureController : MonoBehaviour
         Vector2 offset = CalcPositionOffsetBasedOnStructure(e.Type);
         Vector3 pos = e.Position + offset;
 
-        if (structureGameObjects.TryGetValue(pos, out GameObject structureGameObject))
-        {
-            Destroy(structureGameObject);
+        if(structureGameObjects.TryGetValue(pos, out GameObject structureGameObject))
+{
+            if (structureGameObject != null)
+            {
+                Destroy(structureGameObject);
+                Debug.Log($"StructureDestroyed in Scene and Dictionary {pos}");
+            }
+            else
+            {
+                Debug.Log($"StructureNotFound in Scene but Removed from Dictionary {pos}");
+            }
             structureGameObjects.Remove(pos);
         }
     }
 
+    private void HandleBuildingDestruction(Building building)
+    {
+        Vector2 position = new Vector2(building.transform.position.x, building.transform.position.y);
+        StructureType structureType = building.GetComponent<Building>().StructureType;
+        Destroy(structureType, position);
+    }
     // Return the appropriate prefab based on the type of the structure
     private GameObject GetStructurePrefab(StructureType type)
     {
@@ -149,6 +167,8 @@ public class StructureController : MonoBehaviour
                 return floorPrefab;
             case StructureType.Ramp:
                 return rampPrefab;
+            case StructureType.ReversedRamp:
+                return rampReversedPrefab;
             default:
                 throw new ArgumentException("Invalid structure type");
         }
@@ -159,5 +179,6 @@ public class StructureController : MonoBehaviour
         // Check if there is a GameObject at this cell position in the structureGameObjects dictionary
         return structureGameObjects.ContainsKey(position);
     }
+
 
 }
