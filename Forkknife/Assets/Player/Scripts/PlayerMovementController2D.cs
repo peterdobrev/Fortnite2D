@@ -1,9 +1,10 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerMovementController2D : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float sprintSpeedMultiplier = 1.5f;
+    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float sprintSpeedMultiplier = 5f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -14,9 +15,12 @@ public class PlayerMovementController2D : MonoBehaviour
     private bool isSprinting;
     private float groundCheckRadius = 0.2f;
 
+    private PhotonView view;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        view = GetComponent<PhotonView>();
     }
 
     private void FixedUpdate()
@@ -26,39 +30,49 @@ public class PlayerMovementController2D : MonoBehaviour
 
     private void Update()
     {
-        float moveDirection = GetHorizontalInput();
-        float moveSpeedModified = GetMoveSpeed() * (isSprinting ? sprintSpeedMultiplier : 1f);
-        rb.velocity = new Vector2(moveDirection * moveSpeedModified, rb.velocity.y);
-
-        if (IsJumpInput() && isGrounded)
+        if (view.IsMine)
         {
-            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-        }
+            float moveDirection = GetHorizontalInput();
+            float moveSpeedModified = GetMoveSpeed() * (isSprinting ? sprintSpeedMultiplier : 1f);
+            rb.velocity = new Vector2(moveDirection * moveSpeedModified, rb.velocity.y);
 
+            if (IsJumpInput() && isGrounded)
+            {
+                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            }
+
+            HandleSprinting();
+
+            HandleJumpAnimation();
+            HandleCharacterFlip();
+        }
+    }
+
+    private void HandleJumpAnimation()
+    {
+        if(!isGrounded)
+        {
+            animator.SetBool("isJumping", true);
+        }
+        else
+        {
+            animator.SetBool("isJumping", false);
+        }
+    }    
+
+    private void HandleSprinting()
+    {
         if (IsSprintInputDown())
         {
             isSprinting = true;
+            animator.SetBool("isSprinting", true);
         }
         else if (IsSprintInputUp())
         {
             isSprinting = false;
+            animator.SetBool("isSprinting", false);
         }
-
-        HandleInAirAnimation();
-        HandleCharacterFlip();
     }
-
-    private void HandleInAirAnimation()
-    {
-        if(!isGrounded)
-        {
-            animator.SetBool("In Air", true);
-        }
-        else
-        {
-            animator.SetBool("In Air", false);
-        }
-    }    
 
     private void HandleCharacterFlip()
     {

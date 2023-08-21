@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,11 @@ using UnityEngine.Events;
 [RequireComponent(typeof(ShootingHandler))]
 public class PlayerActionController2D : MonoBehaviour
 {
-    private PlayerState currentState = PlayerState.Shooting;
+    public PlayerState CurrentState { get; private set; }
     private BuildingHandler buildingHandler;
     private ShootingHandler shootingHandler;
+
+    private PhotonView view;
 
     public UnityEvent onWallKeyPressed;
     public UnityEvent onFloorKeyPressed;
@@ -26,6 +29,10 @@ public class PlayerActionController2D : MonoBehaviour
 
     private void Awake()
     {
+        CurrentState = PlayerState.Shooting;
+
+        view = GetComponent<PhotonView>();
+
         buildingHandler = GetComponent<BuildingHandler>();
         shootingHandler = GetComponent<ShootingHandler>();
 
@@ -62,48 +69,51 @@ public class PlayerActionController2D : MonoBehaviour
 
         onBuildingMode.AddListener(() =>
         {
-            currentState = PlayerState.Building;
+            CurrentState = PlayerState.Building;
         });
         onShootingMode.AddListener(() =>
         {
-            currentState = PlayerState.Shooting;
+            CurrentState = PlayerState.Shooting;
         });
     }
 
     void Update()
     {
-        // Handle mode switching
-        if (Input.GetKeyDown(KeyCode.Q))
+        if(view.IsMine)
         {
-            onWallKeyPressed.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            onFloorKeyPressed.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            onRampKeyPressed.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.V))
-        {
-            onReversedRampKeyPressed.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            onSlot1KeyPressed.Invoke();
-        }
+            // Handle mode switching
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                onWallKeyPressed.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                onFloorKeyPressed.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                onRampKeyPressed.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.V))
+            {
+                onReversedRampKeyPressed.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                onSlot1KeyPressed.Invoke();
+            }
 
-        switch (currentState)
-        {
-            case PlayerState.Building:
-                buildingHandler.HandleInput();
-                break;
-            case PlayerState.Shooting:
-                shootingHandler.HandleInput();
-                break;
-            default:
-                break;
+            switch (CurrentState)
+            {
+                case PlayerState.Building:
+                    buildingHandler.HandleInput();
+                    break;
+                case PlayerState.Shooting:
+                    shootingHandler.HandleInput();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
