@@ -6,7 +6,6 @@ public class ShootingHandler : MonoBehaviour, IActionHandler
     public GameObject slot1;
     private IWeapon currentWeapon;
 
-    [SerializeField] private Transform shootParticleSpawnPoint;
     [SerializeField] private IKControl ikControl; // Drag your IKControl component here in the inspector
     [SerializeField] private float recoilStrength = 0.5f;
 
@@ -33,17 +32,20 @@ public class ShootingHandler : MonoBehaviour, IActionHandler
         currentWeapon?.Shoot();
         onShoot?.Invoke();
 
-        PlayShootParticle();
 
-        // Apply recoil (it should be multiplied by -1, but in my code here this is how it works correctly)
-        Vector3 recoilDirection = (CodeMonkey.Utils.UtilsClass.GetMouseWorldPosition() - transform.position).normalized;
-        ikControl.ApplyRecoil(recoilDirection * recoilStrength);
+        Vector3 shootingDirection = (CodeMonkey.Utils.UtilsClass.GetMouseWorldPosition() - transform.position).normalized;
+
+        // Calculate the recoil direction by getting a vector 90 degrees upwards relative to shooting direction
+        Vector3 recoilDirection = Vector3.Cross(shootingDirection, Vector3.forward).normalized;
+
+        // Check if the player is flipped (looking to the left). If so, reverse the recoil direction.
+        if (transform.localScale.x < 0)
+        {
+            recoilDirection *= -1;
+        }
+
+        ikControl.ApplyRecoil(-recoilDirection * recoilStrength);
     }
 
-    private void PlayShootParticle()
-    {
-        var particle = ParticleManager.Instance.GetShootParticle();
-        particle.transform.position = shootParticleSpawnPoint.position;
-        particle.Play();
-    }
+
 }

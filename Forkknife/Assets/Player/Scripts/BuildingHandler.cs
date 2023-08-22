@@ -8,10 +8,10 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
 {
     private float lastBuildTime; 
     private const float BUILD_COOLDOWN = 0.1f;
-
-
     public StructureType SelectedStructure { get; set; }
-    
+
+    public BlueprintHandler blueprintHandler;
+
     public StructureController structureController;
 
     public UnityEvent onBuild;
@@ -20,17 +20,23 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
     {
         Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
 
+        Vector3? buildPosition = GetBuildPosition(mousePosition);
+        if (buildPosition != null)
+        {
+            blueprintHandler.ShowBlueprint(SelectedStructure, (Vector3)buildPosition);
+        }
+
         if (Input.GetMouseButtonDown(0) && Time.time - lastBuildTime > BUILD_COOLDOWN)
         {
             lastBuildTime = Time.time;
-
-            Vector3? buildPosition = GetBuildPosition(mousePosition);
             if (buildPosition != null)
             {
                 structureController.Build(SelectedStructure, (Vector3)buildPosition);
+                blueprintHandler.DestroyBlueprint(); // Destroy blueprint after building
             }
         }
     }
+
     private Vector3? GetBuildPosition(Vector3 mousePosition)
     {
         var playerCell = GetPlayerCell();
@@ -65,7 +71,6 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
         // If the cell is not valid, return null
         return null;
     }
-
 
     private Vector2Int GetPlayerCell()
     {
@@ -136,8 +141,4 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
         }
         return worldPosition;
     }
-
-
-    
-
 }

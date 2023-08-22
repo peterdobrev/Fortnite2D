@@ -33,6 +33,8 @@ public class Grid<TGridObject>
         this.cellSize = cellSize;
         this.originPosition = originPosition;
 
+        StructureOffsetUtility.cellSize = cellSize;
+
         InitializeGrid(createGridObject);
         if (showDebug) DebugDrawGrid();
     }
