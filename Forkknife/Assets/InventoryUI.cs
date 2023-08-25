@@ -4,18 +4,18 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public Inventory playerInventory;
-    public Transform itemsParent;
+    public Image[] itemSlotImages;
     public GameObject inventoryUI;
 
     public Image[] itemImages;
 
     private void Start()
     {
-        itemImages = itemsParent.GetComponentsInChildren<Image>();
+        itemImages = itemSlotImages;
         UpdateUI();
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         for (int i = 0; i < itemImages.Length; i++)
         {
