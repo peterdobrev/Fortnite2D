@@ -33,7 +33,7 @@ public class ShootingHandler : MonoBehaviour, IActionHandler
         onShoot?.Invoke();
 
 
-        Vector3 shootingDirection = (CodeMonkey.Utils.UtilsClass.GetMouseWorldPosition() - transform.position).normalized;
+        Vector3 shootingDirection = (CodeMonkey.Utils.UtilsClass.GetMouseWorldPositionCinemachine() - transform.position).normalized;
 
         // Calculate the recoil direction by getting a vector 90 degrees upwards relative to shooting direction
         Vector3 recoilDirection = Vector3.Cross(shootingDirection, Vector3.forward).normalized;

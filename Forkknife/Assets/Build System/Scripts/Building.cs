@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Building : MonoBehaviour, IDamageable, IRepairable
 {
@@ -13,10 +14,13 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
 
     public event Action<Building> OnBuildingDestroyed;
 
+    public UnityEvent onBuilding;
+
 
     private void Awake()
     {
         CurrentHealth = 0.01f;
+        StartBuilding();
     }
 
     private void Update()

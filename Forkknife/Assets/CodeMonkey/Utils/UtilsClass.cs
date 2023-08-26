@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Cinemachine;
 
 namespace CodeMonkey.Utils {
 
@@ -246,6 +247,42 @@ namespace CodeMonkey.Utils {
             return GetMouseWorldPositionWithZ(Input.mousePosition, worldCamera);
         }
         public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPosition, Camera worldCamera)
+        {
+            Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
+            return worldPosition;
+        }
+
+        // Mouse pos for cinemachine usages
+        private static Camera GetCurrentCinemachineCamera()
+        {
+            // If there's an active Cinemachine brain and an active virtual camera, use that. Otherwise, default to Camera.main.
+            CinemachineBrain brain = Camera.main.GetComponent<CinemachineBrain>();
+            if (brain != null && brain.ActiveVirtualCamera != null)
+            {
+                return brain.OutputCamera;
+            }
+            return Camera.main;
+        }
+
+        // Get Mouse Position in World with Z = 0f
+        public static Vector3 GetMouseWorldPositionCinemachine()
+        {
+            Vector3 vec = GetMouseWorldPositionWithZCinemachine(Input.mousePosition, GetCurrentCinemachineCamera());
+            vec.z = 0f;
+            return vec;
+        }
+
+        public static Vector3 GetMouseWorldPositionWithZCinemachine()
+        {
+            return GetMouseWorldPositionWithZCinemachine(Input.mousePosition, GetCurrentCinemachineCamera());
+        }
+
+        public static Vector3 GetMouseWorldPositionWithZCinemachine(Camera worldCamera)
+        {
+            return GetMouseWorldPositionWithZCinemachine(Input.mousePosition, worldCamera);
+        }
+
+        public static Vector3 GetMouseWorldPositionWithZCinemachine(Vector3 screenPosition, Camera worldCamera)
         {
             Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
             return worldPosition;

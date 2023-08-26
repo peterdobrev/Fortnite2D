@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class BuildingHandler : MonoBehaviour, IActionHandler
 {
-    private float lastBuildTime; 
+    private float lastBuildTime;
     private const float BUILD_COOLDOWN = 0.1f;
     public StructureType SelectedStructure { get; set; }
 
@@ -16,14 +16,35 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
 
     public UnityEvent onBuild;
 
+    private const string OBSTACLE_LAYER = "Ground"; // Set this to the name of your obstacle layer
+
+    private bool IsPathClear(Vector3 start, Vector3 end)
+    {
+        // Setup the layer mask to only hit obstacles
+        int layerMask = 1 << LayerMask.NameToLayer(OBSTACLE_LAYER);
+
+        // Perform the Raycast
+        RaycastHit2D hit = Physics2D.Raycast(start, end - start, Vector2.Distance(start, end), layerMask);
+
+        // If we hit something in the obstacle layer, then the path is not clear
+        return hit.collider == null;
+    }
+
     public void HandleInput()
     {
-        Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
+        Vector3 mousePosition = UtilsClass.GetMouseWorldPositionCinemachine();
 
         Vector3? buildPosition = GetBuildPosition(mousePosition);
-        if (buildPosition != null)
+
+        if (buildPosition != null &&
+            IsPathClear(transform.position, mousePosition) &&
+            IsPathClear(transform.position, (Vector3)buildPosition))
         {
             blueprintHandler.ShowBlueprint(SelectedStructure, (Vector3)buildPosition);
+        }
+        else
+        {
+            return; // If path isn't clear, simply return from the function.
         }
 
         if (Input.GetMouseButtonDown(0) && Time.time - lastBuildTime > BUILD_COOLDOWN)
@@ -31,6 +52,7 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
             lastBuildTime = Time.time;
             if (buildPosition != null)
             {
+                Debug.Log(buildPosition);
                 structureController.Build(SelectedStructure, (Vector3)buildPosition);
                 blueprintHandler.DestroyBlueprint(); // Destroy blueprint after building
             }
@@ -39,38 +61,64 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
 
     private Vector3? GetBuildPosition(Vector3 mousePosition)
     {
-        var playerCell = GetPlayerCell();
-        var mouseCell = GetMouseCell(mousePosition);
+        Vector2Int mouseCell = GetMouseCell(mousePosition);
+        Vector3 cellCenter = (Vector2)GetWorldPosition(mouseCell) + StructureOffsetUtility.CalculateOffset(StructureType.Ramp);  // This is the center node of the cell
+        Vector2Int selectedCell;
 
-        Vector3 direction = (mousePosition - transform.position).normalized;
-
-        // Calculate build cell coordinates based on the direction
-        Vector2Int buildCell = playerCell + RoundToInt(direction);
-        buildCell = ApplyStructureSpecificRules(buildCell, playerCell, direction);
-
-        // Check if the potential build position is occupied
-        if (structureController.DoesStructureExistAtPosition(AddPositionOffsetBasedOnStructure(SelectedStructure, (Vector2)buildCell)))
+        switch (SelectedStructure)
         {
-            Debug.Log("Is occupied");
+            case StructureType.Ramp:
+            case StructureType.ReversedRamp:
+                selectedCell = mouseCell;
+                break;
+
+            case StructureType.Wall:
+                if (mousePosition.x > cellCenter.x)
+                {
+                    // Go to the next cell to the right and get its left node
+                    selectedCell = new Vector2Int(mouseCell.x + 1, mouseCell.y);
+                }
+                else
+                {
+                    // Use the left node of the current cell
+                    selectedCell = mouseCell;
+                }
+                break;
+
+            case StructureType.Floor:
+                if (mousePosition.y > cellCenter.y)
+                {
+                    // Go to the cell above and get its bottom node
+                    selectedCell = new Vector2Int(mouseCell.x, mouseCell.y + 1);
+                }
+                else
+                {
+                    // Use the bottom node of the current cell
+                    selectedCell = mouseCell;
+                }
+                break;
+
+            default:
+                return null;
+        }
+        if(!structureController.buildSystem.grid.IsCellValid(selectedCell.x, selectedCell.y))
+        {
             return null;
         }
-
-        // If the player and the mouse cursor are in the same cell and the selected structure is a Ramp or a Floor, return the player's world position
-        if (playerCell == mouseCell && (SelectedStructure == StructureType.Ramp || SelectedStructure == StructureType.Floor || SelectedStructure == StructureType.ReversedRamp))
+        var structurePos = (Vector2)GetWorldPosition(selectedCell) + StructureOffsetUtility.CalculateOffset(SelectedStructure);
+        var structurePosForList = selectedCell + StructureOffsetUtility.CalculateOffset(SelectedStructure) / StructureOffsetUtility.cellSize;
+        // If the structure does not exist at the selected position, return the position. Otherwise, return null.
+        if (!structureController.DoesStructureExistAtPosition(structurePosForList))
         {
-            if (!structureController.DoesStructureExistAtPosition(AddPositionOffsetBasedOnStructure(SelectedStructure, (Vector2)playerCell)))
-                return GetWorldPosition(playerCell);
+            return (Vector2)structurePos;
         }
-
-        if (structureController.buildSystem.grid.IsCellValid(buildCell.x, buildCell.y))
+        else
         {
-            // If the cell is valid, convert it back to world position
-            return GetWorldPosition(buildCell);
+            Debug.Log("Position occupied");
+            return null;
         }
-
-        // If the cell is not valid, return null
-        return null;
     }
+
 
     private Vector2Int GetPlayerCell()
     {
@@ -94,51 +142,5 @@ public class BuildingHandler : MonoBehaviour, IActionHandler
     private Vector3? GetWorldPosition(Vector2Int cell)
     {
         return structureController.buildSystem.grid.GetWorldPosition(cell.x, cell.y);
-    }
-
-    private Vector2Int ApplyStructureSpecificRules(Vector2Int buildCell, Vector2Int playerCell, Vector3 direction)
-    {
-        switch (SelectedStructure)
-        {
-            case StructureType.Wall:
-                if (buildCell.x < playerCell.x) // Wall is being placed to the left of the player
-                {
-                    buildCell.x += 1; // Place the wall one cell to the left
-                }
-                break;
-
-            case StructureType.Ramp:
-            case StructureType.Floor:
-                if (playerCell == buildCell)
-                {
-                    return buildCell;
-                }
-                else if (buildCell.y < playerCell.y) // Floor is being placed below the player
-                {
-                    buildCell.y += 1; // Place the floor one cell above
-                }
-                break;
-        }
-
-        return buildCell;
-    }
-
-    private Vector3 AddPositionOffsetBasedOnStructure(StructureType structure, Vector3 worldPosition)
-    {
-        switch (structure)
-        {
-            default:
-            case StructureType.Wall:
-                worldPosition += new Vector3(0, 0.5f, 0);
-                break;
-            case StructureType.Floor:
-                worldPosition += new Vector3(0.5f, 0, 0);
-                break;
-            case StructureType.Ramp or StructureType.ReversedRamp:
-                worldPosition += new Vector3(0.5f, 0.5f, 0);
-                break;
-
-        }
-        return worldPosition;
     }
 }

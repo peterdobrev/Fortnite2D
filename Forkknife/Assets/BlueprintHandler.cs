@@ -17,9 +17,6 @@ public class BlueprintHandler : MonoBehaviour
             Destroy(currentBlueprint);
         }
 
-        Vector2 offset = StructureOffsetUtility.CalculateOffset(structure);
-        position += new Vector3(offset.x, offset.y, 0);
-
         GameObject blueprintPrefab = GetBlueprintPrefab(structure);
         currentBlueprint = Instantiate(blueprintPrefab, position, StructureOffsetUtility.GetRotationForStructure((structure)));
     }
