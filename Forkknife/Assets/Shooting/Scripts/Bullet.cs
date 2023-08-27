@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour, IBullet
     public int damage = 1;
     private Vector2 direction;
 
-    void Update()
+    void FixedUpdate()
     {
         Move();
     }

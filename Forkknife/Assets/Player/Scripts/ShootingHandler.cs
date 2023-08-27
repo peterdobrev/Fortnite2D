@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class ShootingHandler : MonoBehaviour, IActionHandler
 {
-    public GameObject slot1;
+    public GameObject activeSlot;
     private IWeapon currentWeapon;
 
     [SerializeField] private IKControl ikControl; // Drag your IKControl component here in the inspector
@@ -11,9 +11,9 @@ public class ShootingHandler : MonoBehaviour, IActionHandler
 
     public UnityEvent onShoot;
 
-    private void Awake()
+    public void ConfigureWeapon()
     {
-        currentWeapon = slot1.GetComponentInChildren<IWeapon>();
+        currentWeapon = activeSlot.GetComponentInChildren<IWeapon>();
     }
 
     public void HandleInput()
@@ -29,10 +29,16 @@ public class ShootingHandler : MonoBehaviour, IActionHandler
 
     private void FireBullet()
     {
-        currentWeapon?.Shoot();
-        onShoot?.Invoke();
+        bool shootPassed = currentWeapon.Shoot();
+        if(shootPassed)
+        {
+            onShoot?.Invoke();
+            HandleRecoil();
+        }
+    }
 
-
+    private void HandleRecoil()
+    {
         Vector3 shootingDirection = (CodeMonkey.Utils.UtilsClass.GetMouseWorldPositionCinemachine() - transform.position).normalized;
 
         // Calculate the recoil direction by getting a vector 90 degrees upwards relative to shooting direction

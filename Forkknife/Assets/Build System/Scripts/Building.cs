@@ -7,6 +7,7 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
     [SerializeField] private float maxHealth = 100f;
     public StructureType StructureType;
     public float CurrentHealth {  get; private set; }
+    public Animator animator;
     
     private bool isBuilding = false;
 
@@ -39,6 +40,22 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
     public void StartBuilding()
     {
         isBuilding = true;
+        animator.SetBool("isBuilding", true);
+
+        switch (StructureType)
+        {
+            default:
+            case StructureType.Wall:
+                animator.SetInteger("BuildingType", 1);
+                break;
+            case StructureType.Floor:
+                animator.SetInteger("BuildingType", 2);
+                break;
+            case StructureType.Ramp:
+            case StructureType.ReversedRamp:
+                animator.SetInteger("BuildingType", 3);
+                break;
+        }
     }
 
     public void TakeDamage(float amount)
@@ -54,6 +71,7 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
         {
             CurrentHealth = maxHealth;
             isBuilding = false;
+            animator.SetBool("isBuilding", false);
         }
         UpdateBuildingVisuals();
     }

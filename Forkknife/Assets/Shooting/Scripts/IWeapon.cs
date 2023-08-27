@@ -1,4 +1,4 @@
 public interface IWeapon
 {
-    void Shoot();
+    bool Shoot();
 }

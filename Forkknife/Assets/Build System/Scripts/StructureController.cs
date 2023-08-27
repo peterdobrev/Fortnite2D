@@ -64,7 +64,6 @@ public class StructureController : MonoBehaviour
 
         if (structureGameObjects.ContainsKey(pos))
         {
-            Debug.Log("Building exists at pos");
             return;
         }
 
@@ -125,7 +124,6 @@ public class StructureController : MonoBehaviour
 
         // Store the game object for future reference
         structureGameObjects[gameObjectsListPos] = structureGameObject;
-        Debug.Log($"Structure ({structure}) built at {gameObjectsListPos} gridpos and {instantiatePosition} worldpos, {cellWorldPosition} gridworldpos");
 
     }
 
@@ -140,11 +138,10 @@ public class StructureController : MonoBehaviour
             if (structureGameObject != null)
             {
                 Destroy(structureGameObject);
-                Debug.Log($"StructureDestroyed in Scene and Dictionary {pos}");
             }
             else
             {
-                Debug.Log($"StructureNotFound in Scene but Removed from Dictionary {pos}");
+                Debug.LogWarning($"StructureNotFound in Scene but Removed from Dictionary {pos}");
             }
             structureGameObjects.Remove(pos);
         }

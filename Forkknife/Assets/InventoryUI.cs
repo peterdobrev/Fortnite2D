@@ -1,17 +1,21 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    [Header("Settings")]
     public Inventory playerInventory;
-    public Image[] itemSlotImages;
-    public GameObject inventoryUI;
 
-    public Image[] itemImages;
+    public Image[] itemImages; // images of the items in the inventory 
 
     private void Start()
     {
-        itemImages = itemSlotImages;
+        InitializeInventory();
+    }
+
+    private void InitializeInventory()
+    {
         UpdateUI();
     }
 
@@ -21,13 +25,36 @@ public class InventoryUI : MonoBehaviour
         {
             if (i < playerInventory.items.Count)
             {
-                itemImages[i].sprite = playerInventory.items[i].item.icon;
-                itemImages[i].enabled = true;
+                SetItemImage(itemImages[i], playerInventory.items[i].item.icon);
             }
             else
             {
-                itemImages[i].enabled = false;
+                DisableItemImage(itemImages[i]);
             }
+        }
+    }
+
+    private void SetItemImage(Image image, Sprite icon)
+    {
+        image.sprite = icon;
+        image.enabled = true;
+    }
+
+    private void DisableItemImage(Image image)
+    {
+        image.enabled = false;
+    }
+
+    private void SetActiveItemBackground(int index, Color color)
+    {
+        itemImages[index].transform.parent.GetComponent<Image>().color = color;
+    }
+
+    private void ResetAllBackgrounds()
+    {
+        for (int i = 0; i < itemImages.Length; i++)
+        {
+            itemImages[i].transform.parent.GetComponent<Image>().color = Color.white;
         }
     }
 }

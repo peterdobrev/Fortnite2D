@@ -1,5 +1,6 @@
 public enum PlayerState
 {
     Shooting,
-    Building
+    Building,
+    Healing
 }

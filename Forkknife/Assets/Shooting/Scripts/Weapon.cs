@@ -3,17 +3,23 @@ using UnityEngine;
 public class Weapon : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float fireRate = 1f;
     [SerializeField] private Transform shootingPoint;
+
+    public WeaponItem weaponItem;
+    public ItemPickup droppableObject;
+
     private float nextFireTime = 0f;
 
-    public void Shoot()
+    public bool Shoot()
     {
         if (Time.time > nextFireTime)
         {
             FireBullet();
-            nextFireTime = Time.time + 1 / fireRate;
+            nextFireTime = Time.time + 1 / weaponItem.fireRate;
+            return true;
         }
+
+        return false;
     }
 
     private void FireBullet()
