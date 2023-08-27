@@ -1,3 +1,4 @@
+using CodeMonkey.HealthSystemCM;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using UnityEngine.Playables;
 
 [RequireComponent(typeof(BuildingHandler))]
 [RequireComponent(typeof(ShootingHandler))]
-public class PlayerActionController2D : MonoBehaviour
+public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
 {
     public PlayerState CurrentState { get; private set; }
     private BuildingHandler buildingHandler;
@@ -187,5 +188,10 @@ public class PlayerActionController2D : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public HealthSystem GetHealthSystem()
+    {
+        return GetComponent<HealthSystemComponent>().GetHealthSystem();
     }
 }

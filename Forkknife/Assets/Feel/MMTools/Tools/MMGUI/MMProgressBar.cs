@@ -543,6 +543,20 @@ namespace MoreMountains.Tools
 			newProgress = Mathf.Clamp(newProgress, 0f, 1f);
 			UpdateBar01(newProgress);
 		}
+
+		public virtual void IncreasePoints(float percentageAmount)
+		{
+            float newProgress = BarTarget + percentageAmount;
+            newProgress = Mathf.Clamp(newProgress, 0f, 1f);
+            UpdateBar01(newProgress);
+        }
+
+        public virtual void DecreasePoints(float percentageAmount)
+		{
+            float newProgress = BarTarget - percentageAmount;
+            newProgress = Mathf.Clamp(newProgress, 0f, 1f);
+            UpdateBar01(newProgress);
+        }
         
 		/// <summary>
 		/// Test method
