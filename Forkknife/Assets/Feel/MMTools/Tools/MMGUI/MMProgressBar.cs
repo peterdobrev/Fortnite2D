@@ -557,11 +557,11 @@ namespace MoreMountains.Tools
             newProgress = Mathf.Clamp(newProgress, 0f, 1f);
             UpdateBar01(newProgress);
         }
-        
-		/// <summary>
-		/// Test method
-		/// </summary>
-		public virtual void Minus10Percent()
+
+        /// <summary>
+        /// Test method
+        /// </summary>
+        public virtual void Minus10Percent()
 		{
 			float newProgress = BarTarget - 0.1f;
 			newProgress = Mathf.Clamp(newProgress, 0f, 1f);

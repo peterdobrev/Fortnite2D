@@ -1180,8 +1180,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthAmountMax: 100
   shieldAmountMax: 100
-  startingHealthAmount: 100
-  startingShieldAmount: 0
+  startingHealthAmount: 52
+  startingShieldAmount: 25
 --- !u!1001 &5013064361669854305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1387,6 +1387,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -25
       objectReference: {fileID: 0}
+    - target: {fileID: 4462759675594072219, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
+      propertyPath: InitialFillValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4523085809752119049, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
+      propertyPath: m_Name
+      value: HealthBars
+      objectReference: {fileID: 0}
+    - target: {fileID: 4523085809752119051, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
+      propertyPath: shieldImage
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4523085809752119051, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
+      propertyPath: getHealthSystemGameObject
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5019366811320239860, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
       propertyPath: m_SizeDelta.x
       value: 600
@@ -1491,6 +1507,10 @@ PrefabInstance:
       propertyPath: onBuildingMode.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7455983766995270792, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
+      propertyPath: InitialFillValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7718161722303613599, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
       propertyPath: structureController
       value: 
@@ -1515,7 +1535,10 @@ PrefabInstance:
     - {fileID: 4260492791545462953, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
     - {fileID: 1131883162561123517, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
     - {fileID: 1458439685282855532, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 4523085809752119051, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 5067849185228384312, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
+    - {fileID: 3766721690641512207, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1631763408265478851, guid: 785db95daa93e084cb8514426a5d6ac0, type: 3}
