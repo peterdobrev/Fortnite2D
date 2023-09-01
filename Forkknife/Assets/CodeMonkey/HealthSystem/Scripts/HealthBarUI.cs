@@ -50,12 +50,12 @@ public class HealthBarUI : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        healthBar.SetBar01(healthSystem.GetHealthNormalized());
+        healthBar.UpdateBar01(healthSystem.GetHealthNormalized());
     }
 
     private void UpdateShieldBar()
     {
-        shieldBar.SetBar01(healthSystem.GetShieldNormalized());
+        shieldBar.UpdateBar01(healthSystem.GetShieldNormalized());
     }
 
     private void OnDestroy()

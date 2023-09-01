@@ -95,7 +95,7 @@ public class Inventory : MonoBehaviour
         {
             return PlayerState.Shooting;
         }
-        else if (items[index].item is HealingItem or ShieldItem)
+        else if (items[index].item is HealingItem)
         {
             return PlayerState.Healing;
         }

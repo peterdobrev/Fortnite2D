@@ -118,7 +118,7 @@ namespace CodeMonkey.Utils {
             }
             return 0f;
         }
-        public void AddTextOutline(Color color, float size) {
+       /* public void AddTextOutline(Color color, float size) {
             foreach (Transform textComplexTrans in transform) {
                 if (textComplexTrans.GetComponent<Text>() != null) {
                     Outline outline = textComplexTrans.gameObject.AddComponent<Outline>();
@@ -126,7 +126,7 @@ namespace CodeMonkey.Utils {
                     outline.effectDistance = new Vector2(size, size);
                 }
             }
-        }
+        }*/
         public void SetAnchorMiddle() {
             rectTransform.anchorMin = new Vector2(.5f, .5f);
             rectTransform.anchorMax = new Vector2(.5f, .5f);

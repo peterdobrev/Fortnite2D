@@ -93,6 +93,7 @@ public class HealthSystem
         {
             shield = shieldMax;
         }
+        OnShieldChanged?.Invoke(this, EventArgs.Empty);
         // Consider invoking an event like OnShieldChanged if needed
     }
 
@@ -106,6 +107,7 @@ public class HealthSystem
             float damageToShield = Mathf.Min(amount, shield);
             shield -= damageToShield;
             amount -= damageToShield;
+            OnShieldChanged?.Invoke(this, EventArgs.Empty);
         }
 
         health -= amount;

@@ -7,8 +7,11 @@ using UnityEngine;
 /// </summary>
 public class HealingHandler : MonoBehaviour, IActionHandler
 {
-    public GameObject activeSlot;
     private Healing currentHealing;
+
+    [SerializeField] private HealthSystemComponent healthSystem;
+    public GameObject ActiveSlot { get; set; }
+
 
     public void HandleInput()
     {
@@ -20,7 +23,7 @@ public class HealingHandler : MonoBehaviour, IActionHandler
 
     public void ConfigureHealing()
     {
-        currentHealing = activeSlot.GetComponentInChildren<Healing>();
+        currentHealing = ActiveSlot.GetComponentInChildren<Healing>();
     }
 
     private void StartHealing()
@@ -31,6 +34,7 @@ public class HealingHandler : MonoBehaviour, IActionHandler
 
     private IEnumerator HealingWithDelay(float time)
     {
+        Debug.Log("Timer started!");
         yield return new WaitForSeconds(time);
         Heal();  
     }
@@ -40,10 +44,13 @@ public class HealingHandler : MonoBehaviour, IActionHandler
         switch(currentHealing.healingItem.healingType)
         {
             case HealingType.Health:
+                healthSystem.GetHealthSystem().Heal(currentHealing.healingItem.healthRecovered);
                 break;
-            case HealingType.Shield: 
+            case HealingType.Shield:
+                healthSystem.GetHealthSystem().ApplyShield(currentHealing.healingItem.healthRecovered);
                 break;
         }
+        Debug.Log("Healed!");
     }
 
 

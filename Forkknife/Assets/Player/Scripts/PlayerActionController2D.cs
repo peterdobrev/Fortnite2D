@@ -13,6 +13,7 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
     public PlayerState CurrentState { get; private set; }
     private BuildingHandler buildingHandler;
     private ShootingHandler shootingHandler;
+    private HealingHandler healingHandler;
     private Inventory inventory;
 
     private PhotonView view;
@@ -40,6 +41,8 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
 
         buildingHandler = GetComponent<BuildingHandler>();
         shootingHandler = GetComponent<ShootingHandler>();
+        healingHandler = GetComponent<HealingHandler>();
+
         inventory = GetComponent<Inventory>();
 
         HandleEvents();
@@ -114,7 +117,11 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
         });
         onHealingMode.AddListener(() =>
         {
+            GameObject activeSlot = inventory.GetActiveSlot();
+            healingHandler.ActiveSlot = activeSlot;
+            healingHandler.ConfigureHealing();
             CurrentState = PlayerState.Healing; 
+
         });
     }
 
@@ -129,7 +136,7 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
                 onBuildingMode.Invoke();
                 break;
             case PlayerState.Healing:
-                onBuildingMode.Invoke();
+                onHealingMode.Invoke();
                 break;
         }
     }
@@ -183,6 +190,9 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
                     break;
                 case PlayerState.Shooting:
                     shootingHandler.HandleInput();
+                    break;
+                case PlayerState.Healing:
+                    healingHandler.HandleInput();
                     break;
                 default:
                     break;
