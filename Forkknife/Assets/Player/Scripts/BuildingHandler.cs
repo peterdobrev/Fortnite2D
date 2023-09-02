@@ -1,22 +1,29 @@
 using CodeMonkey.Utils;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BuildingHandler : MonoBehaviour, IActionHandler
+public class BuildingHandler : NetworkBehaviour, IActionHandler
 {
     private float lastBuildTime;
     private const float BUILD_COOLDOWN = 0.1f;
+    private const string OBSTACLE_LAYER = "Ground"; // Set this to the name of your obstacle layer
+
+    private StructureController structureController;
+    private BlueprintHandler blueprintHandler;
+
     public StructureType SelectedStructure { get; set; }
-
-    public BlueprintHandler blueprintHandler;
-
-    public StructureController structureController;
 
     public UnityEvent onBuild;
 
-    private const string OBSTACLE_LAYER = "Ground"; // Set this to the name of your obstacle layer
+
+    private void Awake()
+    {
+        blueprintHandler = GetComponent<BlueprintHandler>();
+        structureController = GameObject.FindGameObjectWithTag("BuildSystem").GetComponent<StructureController>();
+    }
 
     private bool IsPathClear(Vector3 start, Vector3 end)
     {

@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class IKControl : MonoBehaviour
+public class IKControl : NetworkBehaviour
 {
     public Transform rightArmTarget;
     public Transform leftArmTarget;
@@ -10,15 +11,17 @@ public class IKControl : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner) return;
+
         Vector3 mousePos = CodeMonkey.Utils.UtilsClass.GetMouseWorldPosition();
 
         PlayerState? playerState = GetPlayerState();
 
-        if(playerState == null)
+        if (playerState == null)
         {
             return;
         }
-        else if(playerState == PlayerState.Shooting)
+        else if (playerState == PlayerState.Shooting)
         {
             HandleIKInShootingState(mousePos);
         }

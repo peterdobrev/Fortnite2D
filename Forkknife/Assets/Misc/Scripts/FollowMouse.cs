@@ -1,8 +1,9 @@
 using CodeMonkey.Utils;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class FollowMouse : MonoBehaviour
+public class FollowMouse : NetworkBehaviour
 {
     [Header("Edge Detection Settings")]
     private const float EDGE_90_PERCENT = 0.90f;
@@ -20,6 +21,8 @@ public class FollowMouse : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner) return;
+
         Vector2 mousePosition = UtilsClass.GetMouseWorldPositionCinemachine();
         transform.position = mousePosition;
 

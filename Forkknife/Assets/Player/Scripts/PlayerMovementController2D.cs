@@ -1,7 +1,7 @@
-using Photon.Pun;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerMovementController2D : MonoBehaviour
+public class PlayerMovementController2D : NetworkBehaviour
 {
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float sprintSpeedMultiplier = 5f;
@@ -15,12 +15,11 @@ public class PlayerMovementController2D : MonoBehaviour
     private bool isSprinting;
     private float groundCheckRadius = 0.2f;
 
-    private PhotonView view;
+    private Vector2 lastServerPosition;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        view = GetComponent<PhotonView>();
     }
 
     private void FixedUpdate()
@@ -30,23 +29,73 @@ public class PlayerMovementController2D : MonoBehaviour
 
     private void Update()
     {
-        if (view.IsMine)
+        if (IsOwner)
         {
             float moveDirection = GetHorizontalInput();
-            float moveSpeedModified = GetMoveSpeed() * (isSprinting ? sprintSpeedMultiplier : 1f);
-            rb.velocity = new Vector2(moveDirection * moveSpeedModified, rb.velocity.y);
-
-            if (IsJumpInput() && isGrounded)
-            {
-                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-            }
-
+            bool isJumpPressed = IsJumpInput();
             HandleSprinting();
 
-            HandleJumpAnimation();
-            HandleCharacterFlip();
+            HandleLocalMovement(moveDirection, isJumpPressed, isSprinting);
+
+            SendInputToServerRpc(moveDirection, isJumpPressed, isSprinting);
+        }
+
+        else
+        {
+            // For non-owner clients, we might want to use server-provided positions
+            // This is a simple approximation and might be improved with interpolation
+            transform.position = Vector2.Lerp(transform.position, lastServerPosition, 0.1f);
+        }
+
+        HandleJumpAnimation();
+        HandleCharacterFlip();
+    }
+
+    private void HandleLocalMovement(float moveDirection, bool isJumpPressed, bool isSprinting)
+    {
+        // Your movement logic, similar to HandleMovement but without any authoritative checks.
+        float moveSpeedModified = GetMoveSpeed() * (isSprinting ? sprintSpeedMultiplier : 1f);
+        rb.velocity = new Vector2(moveDirection * moveSpeedModified, rb.velocity.y);
+
+        if (isJumpPressed && isGrounded)
+        {
+            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+        }
+        // Other movement logic...
+    }
+
+    private void HandleMovement(float moveDirection, bool isJumpPressed, bool isSprinting)
+    {
+        // Your movement logic, similar to HandleMovement but without any authoritative checks.
+        float moveSpeedModified = GetMoveSpeed() * (isSprinting ? sprintSpeedMultiplier : 1f);
+        rb.velocity = new Vector2(moveDirection * moveSpeedModified, rb.velocity.y);
+
+        if (isJumpPressed && isGrounded)
+        {
+            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+        }
+
+        // Other movement logic...
+    }
+
+    [ServerRpc]
+    private void SendInputToServerRpc(float moveDirection, bool isJumpPressed, bool isSprinting)
+    {
+        HandleMovement(moveDirection, isJumpPressed, isSprinting);
+
+        // Now send the true position back to the client
+        SendPositionToClientRpc(NetworkObject.OwnerClientId, transform.position);
+    }
+
+    [ClientRpc]
+    private void SendPositionToClientRpc(ulong clientId, Vector2 serverPosition)
+    {
+        if (NetworkManager.Singleton.LocalClientId == clientId)
+        {
+            lastServerPosition = serverPosition;
         }
     }
+
 
     private void HandleJumpAnimation()
     {
@@ -82,12 +131,18 @@ public class PlayerMovementController2D : MonoBehaviour
         if (mousePos.x < transform.position.x)
         {
             // Flip the character to the left
-            transform.localScale = new Vector3(-1, 1, 1);
+            if (transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            }
         }
         else
         {
             // Flip the character to the right
-            transform.localScale = new Vector3(1, 1, 1);
+            if (transform.localScale.x < 0)
+            {
+                transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            }
         }
     }
 

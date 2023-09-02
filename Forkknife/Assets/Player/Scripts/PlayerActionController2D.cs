@@ -1,22 +1,20 @@
 using CodeMonkey.HealthSystemCM;
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(BuildingHandler))]
 [RequireComponent(typeof(ShootingHandler))]
-public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
+public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
 {
     public PlayerState CurrentState { get; private set; }
     private BuildingHandler buildingHandler;
     private ShootingHandler shootingHandler;
     private HealingHandler healingHandler;
     private Inventory inventory;
-
-    private PhotonView view;
 
     public UnityEvent onWallKeyPressed;
     public UnityEvent onFloorKeyPressed;
@@ -37,8 +35,6 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
     {
         CurrentState = PlayerState.Shooting;
 
-        view = GetComponent<PhotonView>();
-
         buildingHandler = GetComponent<BuildingHandler>();
         shootingHandler = GetComponent<ShootingHandler>();
         healingHandler = GetComponent<HealingHandler>();
@@ -53,9 +49,9 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
         // -------------------------------------------------------------------------------------- BUILDING
 
         onWallKeyPressed.AddListener(() =>
-        { 
-            buildingHandler.SelectedStructure = StructureType.Wall; 
-            onBuildingMode.Invoke(); 
+        {
+            buildingHandler.SelectedStructure = StructureType.Wall;
+            onBuildingMode.Invoke();
         });
 
         onFloorKeyPressed.AddListener(() =>
@@ -120,7 +116,7 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
             GameObject activeSlot = inventory.GetActiveSlot();
             healingHandler.ActiveSlot = activeSlot;
             healingHandler.ConfigureHealing();
-            CurrentState = PlayerState.Healing; 
+            CurrentState = PlayerState.Healing;
 
         });
     }
@@ -143,60 +139,59 @@ public class PlayerActionController2D : MonoBehaviour, IGetHealthSystem
 
     void Update()
     {
-        if(view.IsMine)
-        {
-            // Handle mode switching
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                onWallKeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.X))
-            {
-                onFloorKeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.C))
-            {
-                onRampKeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.V))
-            {
-                onReversedRampKeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                onSlot1KeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                onSlot2KeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                onSlot3KeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                onSlot4KeyPressed.Invoke();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                onSlot5KeyPressed.Invoke();
-            }
+        if (!IsOwner) return;
 
-            switch (CurrentState)
-            {
-                case PlayerState.Building:
-                    buildingHandler.HandleInput();
-                    break;
-                case PlayerState.Shooting:
-                    shootingHandler.HandleInput();
-                    break;
-                case PlayerState.Healing:
-                    healingHandler.HandleInput();
-                    break;
-                default:
-                    break;
-            }
+        // Handle mode switching
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            onWallKeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            onFloorKeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            onRampKeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            onReversedRampKeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            onSlot1KeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            onSlot2KeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            onSlot3KeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            onSlot4KeyPressed.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            onSlot5KeyPressed.Invoke();
+        }
+
+        switch (CurrentState)
+        {
+            case PlayerState.Building:
+                buildingHandler.HandleInput();
+                break;
+            case PlayerState.Shooting:
+                shootingHandler.HandleInput();
+                break;
+            case PlayerState.Healing:
+                healingHandler.HandleInput();
+                break;
+            default:
+                break;
         }
     }
 
