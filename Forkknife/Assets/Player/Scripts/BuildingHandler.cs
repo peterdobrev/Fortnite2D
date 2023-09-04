@@ -60,10 +60,16 @@ public class BuildingHandler : NetworkBehaviour, IActionHandler
             if (buildPosition != null)
             {
                 Debug.Log(buildPosition);
-                structureController.Build(SelectedStructure, (Vector3)buildPosition);
+                BuildServerRpc(SelectedStructure, (Vector3)buildPosition);
                 blueprintHandler.DestroyBlueprint(); // Destroy blueprint after building
             }
         }
+    }
+
+    [ServerRpc]
+    private void BuildServerRpc(StructureType type, Vector3 buildPosition)
+    {
+        structureController.Build(type, buildPosition);
     }
 
     private Vector3? GetBuildPosition(Vector3 mousePosition)

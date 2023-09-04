@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Unity.Netcode;
 
 public class StructureEventArgs : EventArgs
 {
@@ -118,6 +119,7 @@ public class StructureController : MonoBehaviour
         // key for dict
         var gameObjectsListPos = e.Position + offset;
         GameObject structureGameObject = Instantiate(structurePrefab, instantiatePosition, quaternion);
+        structureGameObject.GetComponent<NetworkObject>().Spawn();
 
         Building buildingComponent = structureGameObject.GetComponent<Building>();
         buildingComponent.OnBuildingDestroyed += HandleBuildingDestruction;
@@ -138,6 +140,7 @@ public class StructureController : MonoBehaviour
             if (structureGameObject != null)
             {
                 Destroy(structureGameObject);
+                structureGameObject.GetComponent<NetworkObject>().Despawn();
             }
             else
             {

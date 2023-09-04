@@ -1,8 +1,12 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerMovementController2D : NetworkBehaviour
 {
+    #region Movement Settings And Properties
+
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float sprintSpeedMultiplier = 5f;
     [SerializeField] private float jumpForce = 5f;
@@ -12,10 +16,24 @@ public class PlayerMovementController2D : NetworkBehaviour
 
     private Rigidbody2D rb;
     private bool isGrounded;
-    private bool isSprinting;
     private float groundCheckRadius = 0.2f;
 
-    private Vector2 lastServerPosition;
+    #endregion
+
+    #region Movement Input Settings For Network
+
+    private struct InputState
+    {
+        public float moveDirection;
+        public bool isJumpPressed;
+        public bool isSprinting;
+        public uint sequenceNumber; // For tracking which inputs we've processed
+    }
+
+    private List<InputState> inputHistory = new List<InputState>();
+    private uint inputSequenceNumber = 0; // Keep track of how many inputs we've sent
+
+    #endregion
 
     private void Awake()
     {
@@ -31,68 +49,76 @@ public class PlayerMovementController2D : NetworkBehaviour
     {
         if (IsOwner)
         {
-            float moveDirection = GetHorizontalInput();
-            bool isJumpPressed = IsJumpInput();
-            HandleSprinting();
-
-            HandleLocalMovement(moveDirection, isJumpPressed, isSprinting);
-
-            SendInputToServerRpc(moveDirection, isJumpPressed, isSprinting);
-        }
-
-        else
-        {
-            // For non-owner clients, we might want to use server-provided positions
-            // This is a simple approximation and might be improved with interpolation
-            transform.position = Vector2.Lerp(transform.position, lastServerPosition, 0.1f);
+            HandleMovementServerAuth();
         }
 
         HandleJumpAnimation();
         HandleCharacterFlip();
     }
 
-    private void HandleLocalMovement(float moveDirection, bool isJumpPressed, bool isSprinting)
+    private void HandleMovementServerAuth()
     {
-        // Your movement logic, similar to HandleMovement but without any authoritative checks.
-        float moveSpeedModified = GetMoveSpeed() * (isSprinting ? sprintSpeedMultiplier : 1f);
-        rb.velocity = new Vector2(moveDirection * moveSpeedModified, rb.velocity.y);
+        float moveDirection = GetHorizontalInput();
+        bool isJumpPressed = IsJumpInput();
+        bool isSprinting = IsSprinting();
 
-        if (isJumpPressed && isGrounded)
+        InputState newInput = new InputState
+        {
+            moveDirection = moveDirection,
+            isJumpPressed = isJumpPressed,
+            isSprinting = isSprinting,
+            sequenceNumber = inputSequenceNumber++
+        };
+
+        inputHistory.Add(newInput);
+
+        HandleMovement(newInput);
+        HandleMovementServerRpc(newInput.moveDirection, newInput.isJumpPressed, newInput.isSprinting, newInput.sequenceNumber);
+    }
+
+    private void HandleMovement(InputState input)
+    {
+        float moveSpeedModified = GetMoveSpeed() * (input.isSprinting ? sprintSpeedMultiplier : 1f);
+        rb.velocity = new Vector2(input.moveDirection * moveSpeedModified, rb.velocity.y);
+
+        if (input.isJumpPressed && isGrounded)
         {
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
         }
-        // Other movement logic...
     }
 
-    private void HandleMovement(float moveDirection, bool isJumpPressed, bool isSprinting)
-    {
-        // Your movement logic, similar to HandleMovement but without any authoritative checks.
-        float moveSpeedModified = GetMoveSpeed() * (isSprinting ? sprintSpeedMultiplier : 1f);
-        rb.velocity = new Vector2(moveDirection * moveSpeedModified, rb.velocity.y);
-
-        if (isJumpPressed && isGrounded)
-        {
-            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-        }
-
-        // Other movement logic...
-    }
 
     [ServerRpc]
-    private void SendInputToServerRpc(float moveDirection, bool isJumpPressed, bool isSprinting)
+    private void HandleMovementServerRpc(float moveDirection, bool isJumpPressed, bool isSprinting, uint sequenceNumber, ServerRpcParams rpcParams = default)
     {
-        HandleMovement(moveDirection, isJumpPressed, isSprinting);
+        InputState movementInput = new InputState
+        {
+            moveDirection = moveDirection,
+            isJumpPressed = isJumpPressed,
+            isSprinting = isSprinting,
+            sequenceNumber = inputSequenceNumber
+        };
 
-        // Now send the true position back to the client
-        SendPositionToClientRpc(NetworkObject.OwnerClientId, transform.position);
+        HandleMovement(movementInput);
+
+        // Send back the last processed input sequence number
+        ConfirmProcessedInputClientRpc(sequenceNumber, 
+            new ClientRpcParams 
+            { 
+                Send = new ClientRpcSendParams 
+                { 
+                    TargetClientIds = new List<ulong> { rpcParams.Receive.SenderClientId} 
+                } 
+            });
     }
 
     [ClientRpc]
-    private void SendPositionToClientRpc(ulong clientId, Vector2 serverPosition)
+    private void ConfirmProcessedInputClientRpc(uint lastProcessedInput,ClientRpcParams rpcParams = default)
     {
-        if (NetworkManager.Singleton.LocalClientId == clientId)
+        if(rpcParams.Send.TargetClientIds.Contains(NetworkObjectId))
         {
-            lastServerPosition = serverPosition;
+            // Remove all confirmed inputs up to and including the given sequence number
+            inputHistory.RemoveAll(input => input.sequenceNumber <= lastProcessedInput);
         }
     }
 
@@ -109,17 +135,17 @@ public class PlayerMovementController2D : NetworkBehaviour
         }
     }    
 
-    private void HandleSprinting()
+    private bool IsSprinting()
     {
-        if (IsSprintInputDown())
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            isSprinting = true;
             animator.SetBool("isSprinting", true);
+            return true;
         }
-        else if (IsSprintInputUp())
+        else
         {
-            isSprinting = false;
             animator.SetBool("isSprinting", false);
+            return false;
         }
     }
 
@@ -154,7 +180,7 @@ public class PlayerMovementController2D : NetworkBehaviour
 
     }
 
-    private float GetMoveSpeed()
+    private float GetMoveSpeed() 
     {
         return moveSpeed;
     }
@@ -164,13 +190,4 @@ public class PlayerMovementController2D : NetworkBehaviour
         return Input.GetButtonDown("Jump");
     }
 
-    private bool IsSprintInputDown()
-    {
-        return Input.GetButtonDown("Sprint");
-    }
-
-    private bool IsSprintInputUp()
-    {
-        return Input.GetButtonUp("Sprint");
-    }
 }
