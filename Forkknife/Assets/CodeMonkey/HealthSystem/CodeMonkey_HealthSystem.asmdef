@@ -1,6 +1,13 @@
 {
     "name": "CodeMonkey_HealthSystem",
-    "references": ["GUID:4a1cb1490dc4df8409b2580d6b44e75e"],
+    "rootNamespace": "",
+    "references": [
+        "GUID:4a1cb1490dc4df8409b2580d6b44e75e",
+        "GUID:3b8ed52f1b5c64994af4c4e0aa4b6c4b",
+        "GUID:1491147abca9d7d4bb7105af628b223e",
+        "GUID:101012598ee9f064da897a34e72947f9",
+        "GUID:9f4f5bf029cebb64f983b7bdc29f62a1"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

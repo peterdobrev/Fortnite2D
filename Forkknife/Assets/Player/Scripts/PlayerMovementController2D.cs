@@ -108,8 +108,10 @@ public class PlayerMovementController2D : NetworkBehaviour
                 Send = new ClientRpcSendParams 
                 { 
                     TargetClientIds = new List<ulong> { rpcParams.Receive.SenderClientId} 
-                } 
-            });
+                },
+                Receive = new ClientRpcReceiveParams()
+                
+            });;
     }
 
     [ClientRpc]

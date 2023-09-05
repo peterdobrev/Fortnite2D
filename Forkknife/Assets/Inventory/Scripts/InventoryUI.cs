@@ -1,17 +1,31 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : NetworkBehaviour
 {
     [Header("Settings")]
     public Inventory playerInventory;
 
     public Image[] itemImages; // images of the items in the inventory 
 
-    private void Start()
+    [SerializeField] private NetworkObject networkObject;
+
+    public override void OnNetworkSpawn()
     {
-        InitializeInventory();
+        // Only initialize if this is the local player
+        if (networkObject.IsLocalPlayer)
+        {
+            InitializeInventory();
+        }
+        else
+        {
+            // Disable this UI for non-local players
+            this.transform.parent.gameObject.SetActive(false);
+        }
+
+        base.OnNetworkSpawn();
     }
 
     private void InitializeInventory()

@@ -1,8 +1,9 @@
-﻿using MoreMountains.Tools;
+using MoreMountains.Tools;
+using Unity.Netcode;
 using UnityEngine;
 
 
-public class HealthBarUI : MonoBehaviour
+public class HealthBarUI : NetworkBehaviour
 {
 
     [SerializeField] private GameObject getHealthSystemGameObject;
@@ -12,12 +13,24 @@ public class HealthBarUI : MonoBehaviour
 
     private HealthSystem healthSystem;
 
-    private void Start()
+    [SerializeField] private NetworkObject networkObject;
+
+    public override void OnNetworkSpawn()
     {
-        if (HealthSystem.TryGetHealthSystem(getHealthSystemGameObject, out HealthSystem healthSystem))
+        if (networkObject.IsLocalPlayer)
         {
-            SetHealthSystem(healthSystem);
+            if (HealthSystem.TryGetHealthSystem(getHealthSystemGameObject, out HealthSystem healthSystem))
+            {
+                SetHealthSystem(healthSystem);
+            }
         }
+        else
+        {
+            // Disable this UI for non-local players
+            this.transform.parent.gameObject.SetActive(false);
+        }
+
+        base.OnNetworkSpawn();
     }
 
     public void SetHealthSystem(HealthSystem healthSystem)

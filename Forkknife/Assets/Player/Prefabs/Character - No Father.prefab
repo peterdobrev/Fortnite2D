@@ -2865,6 +2865,7 @@ MonoBehaviour:
   - {fileID: 7358743602806857471}
   - {fileID: 2459873845126008512}
   - {fileID: 6883214371411515384}
+  networkObject: {fileID: -7962239477295514567}
 --- !u!1 &3483464609827668814
 GameObject:
   m_ObjectHideFlags: 0
@@ -3028,6 +3029,7 @@ MonoBehaviour:
   getHealthSystemGameObject: {fileID: 4265831250640577336}
   healthBar: {fileID: 5399410769890696563}
   shieldBar: {fileID: 1186872777906110816}
+  networkObject: {fileID: -7962239477295514567}
 --- !u!1 &3854112240980720897
 GameObject:
   m_ObjectHideFlags: 0
@@ -3688,7 +3690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fae2ab89ad1f442a2363676718d917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
 --- !u!1 &4484858017978571170
 GameObject:
   m_ObjectHideFlags: 0
