@@ -34,6 +34,7 @@ public class IKControl : NetworkBehaviour
         recoilOffset = Vector3.Lerp(recoilOffset, Vector3.zero, Time.deltaTime * recoilSpeed);
     }
 
+
     public void ApplyRecoil(Vector3 recoilVector)
     {
         recoilOffset += recoilVector;

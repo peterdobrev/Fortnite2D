@@ -113,7 +113,7 @@ public class PlayerMovementController2D : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void ConfirmProcessedInputClientRpc(uint lastProcessedInput,ClientRpcParams rpcParams = default)
+    private void ConfirmProcessedInputClientRpc(uint lastProcessedInput, ClientRpcParams rpcParams)
     {
         if(rpcParams.Send.TargetClientIds.Contains(NetworkObjectId))
         {

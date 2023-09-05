@@ -17,7 +17,7 @@ public class ItemPickup : MonoBehaviour
             {
                 collision.GetComponent<Inventory>().AddToGameObjectItemSlots(inventorySlotIndex, equipabbleObject);
                 onPickup.Invoke();
-                //Destroy(gameObject); // Destroy item from the world
+                Destroy(gameObject); // Destroy item from the world
             }
         }
     }

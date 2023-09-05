@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : NetworkBehaviour
 {
     public int slots = 5; // Number of inventory slots
     public List<ItemStack> items = new List<ItemStack>();
@@ -9,13 +11,20 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject pickaxeSlot;
     [SerializeField] private GameObject[] itemSlots;
 
-    private int activeSlot = 0;
+    private NetworkVariable<int> activeSlot = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("UI Reference")]
     public InventoryUI inventoryUI; // Drag and drop your InventoryUI GameObject here in the inspector
 
     private void Start()
     {
+        if (IsOwner)
+        {
+            activeSlot.Value = 0;
+        }
+
+        activeSlot.OnValueChanged += OnActiveSlotChanged;
+
         DeactivateAllSlots();
     }
 
@@ -43,7 +52,7 @@ public class Inventory : MonoBehaviour
 
     public void AddToGameObjectItemSlots(int index, GameObject gameobjectItem)
     {
-        Instantiate(gameobjectItem, itemSlots[index].transform);
+        var gameObjectItem = Instantiate(gameobjectItem, itemSlots[index].transform);
     }
 
     public void Use(Item item)
@@ -60,6 +69,17 @@ public class Inventory : MonoBehaviour
         UpdateUI();
     }
 
+
+    // This method is called whenever the active slot changes
+    private void OnActiveSlotChanged(int oldValue, int newValue)
+    {
+        DeactivateAllSlots();
+
+        if (newValue >= 0 && newValue < itemSlots.Length)
+        {
+            itemSlots[newValue].SetActive(true);
+        }
+    }
     public void SwapItems(int firstIndex, int secondIndex)
     {
         if (firstIndex < 0 || firstIndex >= items.Count || secondIndex < 0 || secondIndex >= items.Count)
@@ -75,18 +95,21 @@ public class Inventory : MonoBehaviour
 
     public void SetActiveSlot(int slotIndex)
     {
-        if (slotIndex >= 0 && slotIndex < items.Count)
+        if (IsOwner && slotIndex >= 0 && slotIndex < items.Count)
         {
-            activeSlot = slotIndex;
-            DeactivateAllSlots();
-            itemSlots[activeSlot].SetActive(true);
-            UpdateUI();
+            activeSlot.Value = slotIndex;
         }
+    }
+
+    [ServerRpc]
+    private void ShowActiveSlotItemServerRpc(int index)
+    {
+        itemSlots[index].SetActive(true);
     }
 
     public GameObject GetActiveSlot()
     {
-        return itemSlots[activeSlot];
+        return itemSlots[activeSlot.Value];
     }
 
     public PlayerState DeterminePlayerStateFromItemType(int index)
@@ -110,6 +133,15 @@ public class Inventory : MonoBehaviour
 
 
     public void DeactivateAllSlots()
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            itemSlots[i].SetActive(false);
+        }
+    }
+
+    [ServerRpc]
+    public void DeactivateAllSlotsServerRpc()
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {

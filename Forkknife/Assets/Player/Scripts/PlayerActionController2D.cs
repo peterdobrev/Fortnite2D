@@ -8,6 +8,8 @@ using UnityEngine.Playables;
 
 [RequireComponent(typeof(BuildingHandler))]
 [RequireComponent(typeof(ShootingHandler))]
+[RequireComponent(typeof(HealingHandler))]
+[RequireComponent(typeof(Inventory))]
 public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
 {
     public PlayerState CurrentState { get; private set; }

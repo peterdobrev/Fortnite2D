@@ -5,6 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(HealingHandler))]
 public class BuildingHandler : NetworkBehaviour, IActionHandler
 {
     private float lastBuildTime;
