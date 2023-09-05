@@ -69,7 +69,6 @@ public class Inventory : NetworkBehaviour
         UpdateUI();
     }
 
-
     // This method is called whenever the active slot changes
     private void OnActiveSlotChanged(int oldValue, int newValue)
     {
@@ -80,18 +79,6 @@ public class Inventory : NetworkBehaviour
             itemSlots[newValue].SetActive(true);
         }
     }
-    public void SwapItems(int firstIndex, int secondIndex)
-    {
-        if (firstIndex < 0 || firstIndex >= items.Count || secondIndex < 0 || secondIndex >= items.Count)
-            return; // Invalid indices
-
-        ItemStack temp = items[firstIndex];
-        items[firstIndex] = items[secondIndex];
-        items[secondIndex] = temp;
-
-        UpdateUI();
-    }
-
 
     public void SetActiveSlot(int slotIndex)
     {
@@ -99,12 +86,6 @@ public class Inventory : NetworkBehaviour
         {
             activeSlot.Value = slotIndex;
         }
-    }
-
-    [ServerRpc]
-    private void ShowActiveSlotItemServerRpc(int index)
-    {
-        itemSlots[index].SetActive(true);
     }
 
     public GameObject GetActiveSlot()
@@ -126,22 +107,10 @@ public class Inventory : NetworkBehaviour
         {
             Debug.LogWarning($"COULDN'T DETERMINE PLAYER STATE FROM ITEM TYPE ERROR! INDEX: {index}, ITEM: {items[index]}");
             return PlayerState.Building;
-
         }
-
     }
-
 
     public void DeactivateAllSlots()
-    {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            itemSlots[i].SetActive(false);
-        }
-    }
-
-    [ServerRpc]
-    public void DeactivateAllSlotsServerRpc()
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {

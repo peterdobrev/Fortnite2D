@@ -146,39 +146,39 @@ public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
         // Handle mode switching
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            onWallKeyPressed.Invoke();
+            NotifyWallKeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            onFloorKeyPressed.Invoke();
+            NotifyFloorKeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            onRampKeyPressed.Invoke();
+            NotifyRampKeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            onReversedRampKeyPressed.Invoke();
+            NotifyReversedRampKeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            onSlot1KeyPressed.Invoke();
+            NotifySlot1KeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            onSlot2KeyPressed.Invoke();
+            NotifySlot2KeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            onSlot3KeyPressed.Invoke();
+            NotifySlot3KeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            onSlot4KeyPressed.Invoke();
+            NotifySlot4KeyPressedServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            onSlot5KeyPressed.Invoke();
+            NotifySlot5KeyPressedServerRpc();
         }
 
         switch (CurrentState)
@@ -201,4 +201,120 @@ public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
     {
         return GetComponent<HealthSystemComponent>().GetHealthSystem();
     }
+
+    #region RPCs For Key Events
+
+    // Buildings
+
+    [ServerRpc]
+    public void NotifyWallKeyPressedServerRpc()
+    {
+        NotifyWallKeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifyWallKeyPressedClientRpc()
+    {
+        onWallKeyPressed.Invoke();
+    }
+
+    [ServerRpc]
+    public void NotifyFloorKeyPressedServerRpc()
+    {
+        NotifyFloorKeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifyFloorKeyPressedClientRpc()
+    {
+        onFloorKeyPressed.Invoke();
+    }
+
+    [ServerRpc]
+    public void NotifyRampKeyPressedServerRpc()
+    {
+        NotifyRampKeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifyRampKeyPressedClientRpc()
+    {
+        onRampKeyPressed.Invoke();
+    }
+
+    [ServerRpc]
+    public void NotifyReversedRampKeyPressedServerRpc()
+    {
+        NotifyReversedRampKeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifyReversedRampKeyPressedClientRpc()
+    {
+        onReversedRampKeyPressed.Invoke();
+    }
+
+    // Slots...
+
+    [ServerRpc]
+    public void NotifySlot1KeyPressedServerRpc()
+    {
+        NotifySlot1KeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifySlot1KeyPressedClientRpc()
+    {
+        onSlot1KeyPressed.Invoke();
+    }
+    
+    [ServerRpc]
+    public void NotifySlot2KeyPressedServerRpc()
+    {
+        NotifySlot2KeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifySlot2KeyPressedClientRpc()
+    {
+        onSlot2KeyPressed.Invoke();
+    }
+    
+    [ServerRpc]
+    public void NotifySlot3KeyPressedServerRpc()
+    {
+        NotifySlot3KeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifySlot3KeyPressedClientRpc()
+    {
+        onSlot3KeyPressed.Invoke();
+    }
+    
+    [ServerRpc]
+    public void NotifySlot4KeyPressedServerRpc()
+    {
+        NotifySlot4KeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifySlot4KeyPressedClientRpc()
+    {
+        onSlot4KeyPressed.Invoke();
+    }
+    
+    [ServerRpc]
+    public void NotifySlot5KeyPressedServerRpc()
+    {
+        NotifySlot5KeyPressedClientRpc();
+    }
+
+    [ClientRpc]
+    public void NotifySlot5KeyPressedClientRpc()
+    {
+        onSlot5KeyPressed.Invoke();
+    }
+
+#endregion
 }
