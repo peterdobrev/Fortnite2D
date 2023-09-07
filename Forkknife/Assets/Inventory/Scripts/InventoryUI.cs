@@ -39,7 +39,7 @@ public class InventoryUI : NetworkBehaviour
         {
             if (i < playerInventory.items.Count)
             {
-                SetItemImage(itemImages[i], playerInventory.items[i].item.icon);
+                SetItemImage(itemImages[i], ItemManager.Instance.GetItemById(playerInventory.items[i]).icon);
             }
             else
             {

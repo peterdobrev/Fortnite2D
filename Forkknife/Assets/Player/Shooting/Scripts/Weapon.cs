@@ -1,12 +1,12 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour, IWeapon
+public class Weapon : NetworkBehaviour, IWeapon
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform shootingPoint;
 
     public WeaponItem weaponItem;
-    public ItemPickup droppableObject;
 
     private float nextFireTime = 0f;
 
@@ -30,8 +30,7 @@ public class Weapon : MonoBehaviour, IWeapon
             Time.timeScale = 0;
         }
 
-        Vector3 spawnPosition = shootingPoint.position;
-        GameObject bulletInstance = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+        GameObject bulletInstance = InstantiateNetworkedBullet();
 
         Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
 
@@ -41,7 +40,14 @@ public class Weapon : MonoBehaviour, IWeapon
             Vector2 shootingDirection = GetShootingDirection();
             bulletScript.SetDirection(shootingDirection);
         }
+    }
 
+    private GameObject InstantiateNetworkedBullet()
+    {
+        GameObject bulletInstance = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
+        NetworkObject bulletNetworkObject = bulletInstance.GetComponent<NetworkObject>();
+        bulletNetworkObject.Spawn();
+        return bulletInstance;
     }
 
     private Vector2 GetShootingDirection()

@@ -1,9 +1,10 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ShootingHandler : MonoBehaviour, IActionHandler
+public class ShootingHandler : NetworkBehaviour, IActionHandler
 {
-    public GameObject activeSlot;
+    public GameObject ActiveSlot { get; set; }
     private IWeapon currentWeapon;
 
     [SerializeField] private IKControl ikControl; // Drag your IKControl component here in the inspector
@@ -13,18 +14,28 @@ public class ShootingHandler : MonoBehaviour, IActionHandler
 
     public void ConfigureWeapon()
     {
-        currentWeapon = activeSlot.GetComponentInChildren<IWeapon>();
+        currentWeapon = ActiveSlot.GetComponentInChildren<IWeapon>();
     }
 
     public void HandleInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            FireBullet();
+            FireBulletServerRpc();
         }
-        else if (Input.GetMouseButtonDown(1))
-        {
-        }
+    }
+
+    [ServerRpc]
+    private void FireBulletServerRpc(ServerRpcParams rpcParams = default)
+    {
+        FireBullet();
+        FireBulletClientRpc();
+    }
+
+    [ClientRpc]
+    private void FireBulletClientRpc(ClientRpcParams rpcParams = default)
+    {
+        FireBullet();
     }
 
     private void FireBullet()
@@ -52,6 +63,4 @@ public class ShootingHandler : MonoBehaviour, IActionHandler
 
         ikControl.ApplyRecoil(-recoilDirection * recoilStrength);
     }
-
-
 }

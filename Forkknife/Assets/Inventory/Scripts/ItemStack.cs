@@ -1,3 +1,5 @@
+using Unity.Netcode;
+
 [System.Serializable]
 public class ItemStack
 {

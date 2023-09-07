@@ -73,7 +73,7 @@ public class PlayerMovementController2D : NetworkBehaviour
         inputHistory.Add(newInput);
 
         HandleMovement(newInput);
-        HandleMovementServerRpc(newInput.moveDirection, newInput.isJumpPressed, newInput.isSprinting, newInput.sequenceNumber);
+        //HandleMovementServerRpc(newInput.moveDirection, newInput.isJumpPressed, newInput.isSprinting, newInput.sequenceNumber);
     }
 
     private void HandleMovement(InputState input)
@@ -87,7 +87,7 @@ public class PlayerMovementController2D : NetworkBehaviour
         }
     }
 
-
+/*
     [ServerRpc]
     private void HandleMovementServerRpc(float moveDirection, bool isJumpPressed, bool isSprinting, uint sequenceNumber, ServerRpcParams rpcParams = default)
     {
@@ -122,7 +122,7 @@ public class PlayerMovementController2D : NetworkBehaviour
             // Remove all confirmed inputs up to and including the given sequence number
             inputHistory.RemoveAll(input => input.sequenceNumber <= lastProcessedInput);
         }
-    }
+    }*/
 
 
     private void HandleJumpAnimation()

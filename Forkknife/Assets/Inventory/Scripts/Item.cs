@@ -1,11 +1,14 @@
+using Unity.Netcode;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/Item")]
 public class Item : ScriptableObject
 {
+    public int itemId; // Unique ID for each item
     public string itemName = "New Item";
     public Sprite icon = null; // Icon to be displayed in the inventory
-    public int maxStackSize = 1; // Default to 1 for items that can't be stacked
+    public GameObject equippableObject = null;
+    public GameObject droppableObject = null;
 
     public virtual void Use()
     {

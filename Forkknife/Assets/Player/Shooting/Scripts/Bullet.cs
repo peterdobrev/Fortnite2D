@@ -1,7 +1,9 @@
+using System;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class Bullet : MonoBehaviour, IBullet
+public class Bullet : NetworkBehaviour, IBullet
 {
     public float speed = 5f;
     public int damage = 1;
@@ -19,7 +21,22 @@ public class Bullet : MonoBehaviour, IBullet
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        DealDamage(collision);
+        if (IsServer) // Ensure this logic only happens on the server for authority
+        {
+            DealDamage(collision);
+            OnCollisionServerRpc();
+        }
+    }
+
+    [ServerRpc]
+    public void OnCollisionServerRpc(ServerRpcParams rpcParams = default)
+    {
+        OnCollisionClientRpc();
+    }
+
+    [ClientRpc]
+    public void OnCollisionClientRpc(ClientRpcParams rpcParams = default)
+    {
         OnCollision();
     }
 

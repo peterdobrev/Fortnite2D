@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Inventory : NetworkBehaviour
 {
     public int slots = 5; // Number of inventory slots
-    public List<ItemStack> items = new List<ItemStack>();
+    public NetworkList<int> items = new NetworkList<int>(readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+
 
     [SerializeField] private GameObject pickaxeSlot;
     [SerializeField] private GameObject[] itemSlots;
@@ -23,61 +25,44 @@ public class Inventory : NetworkBehaviour
             activeSlot.Value = 0;
         }
 
-        activeSlot.OnValueChanged += OnActiveSlotChanged;
+        //activeSlot.OnValueChanged += OnActiveSlotChanged;
 
         DeactivateAllSlots();
     }
 
-    public int Add(Item item) // returns the index 
+    [ServerRpc]
+    public void AddItemServerRpc(int item, ServerRpcParams rpcParams = default)
     {
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (items[i].item == item && items[i].amount < item.maxStackSize)
-            {
-                items[i].amount++;
-                UpdateUI();
-                return i;
-            }
-        }
-
         if (items.Count < slots)
         {
-            items.Add(new ItemStack(item, 1));
+            items.Add(item);
             UpdateUI();
-            return items.Count-1;
+            AddItemClientRpc(item);
+        }
+    }
+
+    [ClientRpc]
+    private void AddItemClientRpc(int item, ClientRpcParams rpcParams = default)
+    {
+        // Synchronized across all clients
+        // The item addition to 'items' list on the server has automatically synchronized it
+        // You just need to update the UI or any other logic that's necessary on clients
+        UpdateUI();
+    }
+
+    public int GetFreeSlotIndex() // returns the index 
+    {
+        if (items.Count < slots)
+        {
+            return items.Count;
         }
 
         return -1; // Inventory full
     }
 
-    public void AddToGameObjectItemSlots(int index, GameObject gameobjectItem)
+    public void AddToSlots(int index,GameObject gameObject)
     {
-        var gameObjectItem = Instantiate(gameobjectItem, itemSlots[index].transform);
-    }
-
-    public void Use(Item item)
-    {
-        item.Use();
-        // Further implementation: Remove item or reduce stack size, etc.
-        UpdateUI();
-    }
-
-    public void Remove(Item item)
-    {
-        // Implementation: Remove item or reduce stack size
-        // After removing, don't forget to call:
-        UpdateUI();
-    }
-
-    // This method is called whenever the active slot changes
-    private void OnActiveSlotChanged(int oldValue, int newValue)
-    {
-        DeactivateAllSlots();
-
-        if (newValue >= 0 && newValue < itemSlots.Length)
-        {
-            itemSlots[newValue].SetActive(true);
-        }
+        Instantiate(gameObject, itemSlots[index].transform);
     }
 
     public void SetActiveSlot(int slotIndex)
@@ -95,11 +80,11 @@ public class Inventory : NetworkBehaviour
 
     public PlayerState DeterminePlayerStateFromItemType(int index)
     {
-        if (items[index].item is WeaponItem)
+        if (ItemManager.Instance.GetItemById(items[index]) is WeaponItem)
         {
             return PlayerState.Shooting;
         }
-        else if (items[index].item is HealingItem)
+        else if (ItemManager.Instance.GetItemById(items[index]) is HealingItem)
         {
             return PlayerState.Healing;
         }
