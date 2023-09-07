@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Healing : MonoBehaviour, IHealing
+public class Healing : MonoBehaviour, IHealing, IGetItem
 {
     public HealingItem healingItem;
-    public ItemPickup droppableObject;
+
+    public Item GetItem()
+    {
+        return healingItem;
+    }
 
     public void Heal()
     {

@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Weapon : NetworkBehaviour, IWeapon
+public class Weapon : NetworkBehaviour, IWeapon, IGetItem
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform shootingPoint;
@@ -67,5 +67,10 @@ public class Weapon : NetworkBehaviour, IWeapon
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(shootingPoint.position, 0.1f);
+    }
+
+    public Item GetItem()
+    {
+        return weaponItem;
     }
 }

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,15 +38,32 @@ public class InventoryUI : NetworkBehaviour
     {
         for (int i = 0; i < itemImages.Length; i++)
         {
-            if (i < playerInventory.items.Count)
+            if (i < playerInventory.itemSlots.Length)
             {
-                SetItemImage(itemImages[i], ItemManager.Instance.GetItemById(playerInventory.items[i]).icon);
+                Transform activeSlotChild = GetActiveChild(playerInventory.itemSlots[i]);
+                if (activeSlotChild != null)
+                {
+                    SetItemImage(itemImages[i], activeSlotChild.GetComponent<IGetItem>().GetItem().icon);
+                }
             }
             else
             {
                 DisableItemImage(itemImages[i]);
             }
         }
+    }
+
+    private Transform GetActiveChild(GameObject gameObject)
+    {
+        for(int i = 0;i < gameObject.transform.childCount;i++) 
+        {
+            if(gameObject.transform.GetChild(i).gameObject.activeSelf == true)
+            {
+                return gameObject.transform.GetChild(i);
+            }
+        }
+
+        return null;
     }
 
     private void SetItemImage(Image image, Sprite icon)
