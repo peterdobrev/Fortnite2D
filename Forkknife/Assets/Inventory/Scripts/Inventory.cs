@@ -28,7 +28,9 @@ public class Inventory : NetworkBehaviour
     {
         if (IsOwner && slotIndex >= 0 && slotIndex < slots)
         {
+
             activeSlot.Value = slotIndex;
+            NetworkLog.LogInfoServer($"1c Active slot set to " + activeSlot.Value + $" {NetworkBehaviourId}");
         }
     }
 
@@ -38,10 +40,12 @@ public class Inventory : NetworkBehaviour
         {
             if(itemSlots[slotIndex].transform.GetChild(i).gameObject.activeSelf == true)
             {
+                NetworkLog.LogInfoServer("1a Cycling begin" + $" {NetworkBehaviourId}");
                 int nextIndex = (i + 1) % itemSlots[slotIndex].transform.childCount;
                 itemSlots[slotIndex].transform.GetChild(i).gameObject.SetActive(false);
                 itemSlots[slotIndex].transform.GetChild(nextIndex).gameObject.SetActive(true);
                 UpdateUI();
+                NetworkLog.LogInfoServer("1b Cycling end " + $" {NetworkBehaviourId}");
                 return;
             }
         }
@@ -54,6 +58,7 @@ public class Inventory : NetworkBehaviour
 
     public GameObject GetActiveSlot()
     {
+        NetworkLog.LogInfoServer($"2 Active slot- ActiveSlot[{activeSlot.Value}] - {itemSlots[activeSlot.Value]}" + $" {NetworkBehaviourId}");
         return itemSlots[activeSlot.Value];
     }
 
@@ -63,6 +68,7 @@ public class Inventory : NetworkBehaviour
         {
             itemSlots[i].SetActive(false);
         }
+        NetworkLog.LogInfoServer("3 Deactivating all slots" + $" {NetworkBehaviourId}");
     }
 
     private void UpdateUI()
