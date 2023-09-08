@@ -9,28 +9,23 @@ public class Inventory : NetworkBehaviour
     public int slots = 3; // Number of inventory slots
     public GameObject[] itemSlots;
 
-    private NetworkVariable<int> activeSlot = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("UI Reference")]
     public InventoryUI inventoryUI; // Drag and drop your InventoryUI GameObject here in the inspector
 
+    private int activeSlot = 0;
+
     private void Start()
     {
-        if (IsOwner)
-        {
-            activeSlot.Value = 0;
-        }
-
         DeactivateAllSlots();
     }
 
+    // Client calls this method to request slot change
     public void SetActiveSlot(int slotIndex)
     {
-        if (IsOwner && slotIndex >= 0 && slotIndex < slots)
+        if (slotIndex >= 0 && slotIndex < slots)
         {
-
-            activeSlot.Value = slotIndex;
-            NetworkLog.LogInfoServer($"1c Active slot set to " + activeSlot.Value + $" {NetworkBehaviourId}");
+            activeSlot = slotIndex;
         }
     }
 
@@ -53,13 +48,13 @@ public class Inventory : NetworkBehaviour
 
     public int GetActiveSlotIndex()
     {
-        return activeSlot.Value;
+        return activeSlot;
     }
 
     public GameObject GetActiveSlot()
     {
-        NetworkLog.LogInfoServer($"2 Active slot- ActiveSlot[{activeSlot.Value}] - {itemSlots[activeSlot.Value]}" + $" {NetworkBehaviourId}");
-        return itemSlots[activeSlot.Value];
+        NetworkLog.LogInfoServer($"2 Active slot- ActiveSlot[{activeSlot}] - {itemSlots[activeSlot]}" + $" {NetworkBehaviourId}");
+        return itemSlots[activeSlot];
     }
 
     public void DeactivateAllSlots()
