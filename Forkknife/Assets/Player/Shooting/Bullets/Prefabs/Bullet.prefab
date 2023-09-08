@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 655796884145359227}
   - component: {fileID: 221628307555938297}
-  - component: {fileID: 5599684069986148196}
   - component: {fileID: 4982702760019777961}
   - component: {fileID: 57970452051582336}
   - component: {fileID: 2570614935299675648}
@@ -89,33 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &5599684069986148196
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4445153340089671876}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 0
 --- !u!60 &4982702760019777961
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -179,8 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034dd23be9d6da541b51c8df34d01e2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 35
-  damage: 25
+  speed:
+    m_InternalValue: 5
+  damage:
+    m_InternalValue: 1
 --- !u!96 &2570614935299675648
 TrailRenderer:
   serializedVersion: 3

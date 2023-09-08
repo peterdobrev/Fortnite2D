@@ -14,7 +14,6 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
     {
         if (Time.time > nextFireTime)
         {
-            FireBullet();
             nextFireTime = Time.time + 1 / weaponItem.fireRate;
             return true;
         }
@@ -22,41 +21,45 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
         return false;
     }
 
-    private void FireBullet()
+    public void FireBullet(Vector3 mousePos)
     {
-        PlayShootParticle();
-        if(transform.position.y < 0f )
-        {
-            Time.timeScale = 0;
-        }
+        // this method is already only being handled by the server so maybe it is not needed to be a server rpc
+        NetworkLog.LogInfoServer($"4. Sending firing information to the server - {NetworkObjectId}");
+        SpawnBulletServerAuth(mousePos);
+        
+    }
 
-        GameObject bulletInstance = InstantiateNetworkedBullet();
+    //[ServerRpc]
+    private void SpawnBulletServerAuth(Vector3 mousePos)
+    {
+        if (!IsHost && !IsServer) {
+            NetworkLog.LogInfoServer($"5. IS NOT SERVER OR HOST, RETURNING - {NetworkObjectId}");
+            return; }
+        NetworkLog.LogInfoServer($"5. Client is host or server - {NetworkObjectId}");
+        GameObject bulletInstance = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
+        NetworkLog.LogInfoServer($"6. Bullet instantiated - {NetworkObjectId}");
+        NetworkObject bulletNetworkObject = bulletInstance.GetComponent<NetworkObject>();
+        
+        
+
+        bulletNetworkObject.Spawn();
+        NetworkLog.LogInfoServer($"8. Bullet spawned on server - {NetworkObjectId}");
 
         Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
-
-
         if (bulletScript)
         {
-            Vector2 shootingDirection = GetShootingDirection();
+            Vector2 shootingDirection = GetShootingDirection(mousePos);
             bulletScript.SetDirection(shootingDirection);
         }
     }
 
-    private GameObject InstantiateNetworkedBullet()
+    private Vector2 GetShootingDirection(Vector3 mousePos)
     {
-        GameObject bulletInstance = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
-        NetworkObject bulletNetworkObject = bulletInstance.GetComponent<NetworkObject>();
-        bulletNetworkObject.Spawn();
-        return bulletInstance;
-    }
-
-    private Vector2 GetShootingDirection()
-    {
-        Vector2 direction = (CodeMonkey.Utils.UtilsClass.GetMouseWorldPosition() - transform.position).normalized;
+        Vector2 direction = (mousePos - transform.position).normalized;
         return direction;
     }
 
-    private void PlayShootParticle()
+    public void PlayShootParticle()
     {
         var particle = ParticleManager.Instance.GetShootParticle();
         particle.transform.position = shootingPoint.position;

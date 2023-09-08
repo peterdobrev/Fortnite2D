@@ -3,11 +3,11 @@ using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class Bullet : NetworkBehaviour, IBullet
+public class Bullet : NetworkBehaviour//, IBullet
 {
-    public float speed = 5f;
-    public int damage = 1;
-    private Vector2 direction;
+    public NetworkVariable<float> speed = new NetworkVariable<float>(5f);
+    public NetworkVariable<int> damage = new NetworkVariable<int>(1);
+    private NetworkVariable<Vector2> direction = new NetworkVariable<Vector2>();
 
     void FixedUpdate()
     {
@@ -16,9 +16,10 @@ public class Bullet : NetworkBehaviour, IBullet
 
     public void Move()
     {
-        transform.Translate(direction * speed * Time.deltaTime);
+        transform.Translate(direction.Value * speed.Value * Time.deltaTime);
     }
 
+     /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (IsServer) // Ensure this logic only happens on the server for authority
@@ -27,7 +28,6 @@ public class Bullet : NetworkBehaviour, IBullet
             OnCollisionServerRpc();
         }
     }
-
     [ServerRpc]
     public void OnCollisionServerRpc(ServerRpcParams rpcParams = default)
     {
@@ -50,12 +50,13 @@ public class Bullet : NetworkBehaviour, IBullet
         IDamageable damageableObject = collision.gameObject.GetComponent<IDamageable>();
         if (damageableObject != null)
         {
-            damageableObject.TakeDamage(damage);
+            damageableObject.TakeDamage(damage.Value);
         }
-    }
+    }*/
 
     public void SetDirection(Vector2 dir)
     {
-        direction = dir;
+        NetworkLog.LogInfoServer($"8. Direction of bullet set - {NetworkObjectId}");
+        direction.Value = dir;
     }
 }

@@ -125,7 +125,6 @@ public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
             inventory.DeactivateAllSlots();
             activeSlot.SetActive(true);
             shootingHandler.ActiveSlot = activeSlot;
-            NetworkLog.LogInfoServer($"4 Activated the slot -> {activeSlot}" + $" {NetworkObjectId}");
             shootingHandler.ConfigureWeapon();
             CurrentState = PlayerState.Shooting;
         });
@@ -134,7 +133,6 @@ public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
             GameObject activeSlot = inventory.GetActiveSlot();
             inventory.DeactivateAllSlots();
             activeSlot.SetActive(true);
-            NetworkLog.LogInfoServer($"4 Activated the slot -> {activeSlot}" + $" {NetworkObjectId}");
             healingHandler.ActiveSlot = activeSlot;
             healingHandler.ConfigureHealing();
             CurrentState = PlayerState.Healing;
