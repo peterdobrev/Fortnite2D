@@ -9,9 +9,16 @@ public class Bullet : NetworkBehaviour//, IBullet
     public NetworkVariable<int> damage = new NetworkVariable<int>(1);
     private NetworkVariable<Vector2> direction = new NetworkVariable<Vector2>();
 
+    private float timeAlive = 5f;
+
     void FixedUpdate()
     {
         Move();
+        timeAlive -= Time.deltaTime;
+        if (timeAlive < 0)
+        {
+            DestroyObjectServerRpc();
+        }
     }
 
     public void Move()
@@ -19,40 +26,35 @@ public class Bullet : NetworkBehaviour//, IBullet
         transform.Translate(direction.Value * speed.Value * Time.deltaTime);
     }
 
-     /*
+     
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (IsServer) // Ensure this logic only happens on the server for authority
         {
-            DealDamage(collision);
-            OnCollisionServerRpc();
+            NetworkLog.LogInfoServer($"Bullet collided with {collision.gameObject.name}");
+            var damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                NetworkLog.LogInfoServer($"Bullet is being destroyed because it collided with idamageable: {collision.gameObject.name}");
+                DealDamage(damageable);
+                DestroyObjectServerRpc();
+            }
         }
     }
     [ServerRpc]
-    public void OnCollisionServerRpc(ServerRpcParams rpcParams = default)
+    public void DestroyObjectServerRpc(ServerRpcParams rpcParams = default)
     {
-        OnCollisionClientRpc();
+        GetComponent<NetworkObject>().Despawn(true);
     }
 
-    [ClientRpc]
-    public void OnCollisionClientRpc(ClientRpcParams rpcParams = default)
-    {
-        OnCollision();
-    }
 
-    public void OnCollision() //implementing the interface
+    private void DealDamage(IDamageable damageable)
     {
-        Destroy(gameObject);
-    }
-
-    private void DealDamage(Collision2D collision)
-    {
-        IDamageable damageableObject = collision.gameObject.GetComponent<IDamageable>();
-        if (damageableObject != null)
+        if (damageable != null)
         {
-            damageableObject.TakeDamage(damage.Value);
+            damageable.TakeDamage(damage.Value);
         }
-    }*/
+    }
 
     public void SetDirection(Vector2 dir)
     {

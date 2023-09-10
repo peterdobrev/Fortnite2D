@@ -39,10 +39,8 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
         GameObject bulletInstance = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
         NetworkLog.LogInfoServer($"6. Bullet instantiated - {NetworkObjectId}");
         NetworkObject bulletNetworkObject = bulletInstance.GetComponent<NetworkObject>();
-        
-        
-
         bulletNetworkObject.Spawn();
+
         NetworkLog.LogInfoServer($"8. Bullet spawned on server - {NetworkObjectId}");
 
         Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
