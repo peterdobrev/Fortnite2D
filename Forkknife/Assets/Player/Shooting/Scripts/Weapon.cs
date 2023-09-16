@@ -8,6 +8,9 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
 
     public WeaponItem weaponItem;
 
+    public float shootingRange = 100f; // Maximum distance the bullet can travel
+    public LayerMask shootableLayer;  // Layer to check for shootable objects
+
     private float nextFireTime = 0f;
 
     public bool Shoot()
@@ -21,34 +24,25 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
         return false;
     }
 
-    public void FireBullet(Vector3 mousePos)
+    public bool FireBullet(Vector3 mousePos)
     {
-        // this method is already only being handled by the server so maybe it is not needed to be a server rpc
-        NetworkLog.LogInfoServer($"4. Sending firing information to the server - {NetworkObjectId}");
-        SpawnBulletServerAuth(mousePos);
-        
-    }
+        Vector2 shootingDirection = GetShootingDirection(mousePos);
 
-    //[ServerRpc]
-    private void SpawnBulletServerAuth(Vector3 mousePos)
-    {
-        if (!IsHost && !IsServer) {
-            NetworkLog.LogInfoServer($"5. IS NOT SERVER OR HOST, RETURNING - {NetworkObjectId}");
-            return; }
-        NetworkLog.LogInfoServer($"5. Client is host or server - {NetworkObjectId}");
-        GameObject bulletInstance = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
-        NetworkLog.LogInfoServer($"6. Bullet instantiated - {NetworkObjectId}");
-        NetworkObject bulletNetworkObject = bulletInstance.GetComponent<NetworkObject>();
-        bulletNetworkObject.Spawn();
+        RaycastHit2D hit = Physics2D.Raycast(shootingPoint.position, shootingDirection, shootingRange, shootableLayer);
 
-        NetworkLog.LogInfoServer($"8. Bullet spawned on server - {NetworkObjectId}");
-
-        Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
-        if (bulletScript)
+        if (hit.collider != null)
         {
-            Vector2 shootingDirection = GetShootingDirection(mousePos);
-            bulletScript.SetDirection(shootingDirection);
+            // The ray hit something
+            var idamageable = hit.collider.GetComponent<IDamageable>();
+            if (idamageable != null)
+            {
+                idamageable.TakeDamage(weaponItem.damage);
+                return true;
+            }
         }
+
+        return false;
+
     }
 
     private Vector2 GetShootingDirection(Vector3 mousePos)
@@ -62,12 +56,6 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
         var particle = ParticleManager.Instance.GetShootParticle();
         particle.transform.position = shootingPoint.position;
         particle.Play();
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(shootingPoint.position, 0.1f);
     }
 
     public Item GetItem()

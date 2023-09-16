@@ -21,7 +21,6 @@ public class ShootingHandler : NetworkBehaviour, IActionHandler
     {
         if (Input.GetMouseButtonDown(0))
         {
-            NetworkLog.LogInfoServer($"1. Pressed mouse button - {NetworkObjectId}");
             FireBulletServerRpc(CodeMonkey.Utils.UtilsClass.GetMouseWorldPosition());
         }
     }
@@ -29,20 +28,17 @@ public class ShootingHandler : NetworkBehaviour, IActionHandler
     [ServerRpc]
     private void FireBulletServerRpc(Vector3 mousePos, ServerRpcParams rpcParams = default)
     {
-        NetworkLog.LogInfoServer($"2. Is shoot delay finished and ready to shoot? - {NetworkObjectId}");
         bool shootPassed = currentWeapon.Shoot();
+
         if (shootPassed)
         {
-            NetworkLog.LogInfoServer($"3. Shooting ready - {NetworkObjectId}");
-
             currentWeapon.FireBullet(mousePos);
-
             HandleShootingEffectsClientRpc(mousePos);
             onShoot?.Invoke();
         }
         else
         {
-            NetworkLog.LogInfoServer($"3. Shooting not ready, returning! - {NetworkObjectId}");
+            NetworkLog.LogInfoServer($"Shooting not ready, returning! - {NetworkObjectId}");
         }
     }
 

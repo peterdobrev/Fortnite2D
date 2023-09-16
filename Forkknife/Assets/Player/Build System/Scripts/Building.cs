@@ -61,7 +61,7 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
     public void TakeDamage(float amount)
     {
         CurrentHealth -= amount;
-        UpdateBuildingVisuals();
+        Debug.Log($"{gameObject} took {amount} damage!");
     }
 
     public void Repair(float amount)
@@ -73,11 +73,5 @@ public class Building : MonoBehaviour, IDamageable, IRepairable
             isBuilding = false;
             animator.SetBool("isBuilding", false);
         }
-        UpdateBuildingVisuals();
-    }
-
-    private void UpdateBuildingVisuals()
-    {
-
     }
 }

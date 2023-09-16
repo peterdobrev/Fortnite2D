@@ -9,16 +9,27 @@ public class Bullet : NetworkBehaviour//, IBullet
     public NetworkVariable<int> damage = new NetworkVariable<int>(1);
     private NetworkVariable<Vector2> direction = new NetworkVariable<Vector2>();
 
-    private float timeAlive = 5f;
+    private bool hasSpawned = false;
+
+    //private float timeAlive = 5f;
+
+    public override void OnNetworkSpawn()
+    {
+        hasSpawned = true;
+        base.OnNetworkSpawn();
+    }
 
     void FixedUpdate()
     {
+        if(!hasSpawned) return;
         Move();
+        /*
         timeAlive -= Time.deltaTime;
         if (timeAlive < 0)
         {
             DestroyObjectServerRpc();
         }
+        */
     }
 
     public void Move()
@@ -26,7 +37,7 @@ public class Bullet : NetworkBehaviour//, IBullet
         transform.Translate(direction.Value * speed.Value * Time.deltaTime);
     }
 
-     
+     /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (IsServer) // Ensure this logic only happens on the server for authority
@@ -45,7 +56,7 @@ public class Bullet : NetworkBehaviour//, IBullet
     public void DestroyObjectServerRpc(ServerRpcParams rpcParams = default)
     {
         GetComponent<NetworkObject>().Despawn(true);
-    }
+    }*/
 
 
     private void DealDamage(IDamageable damageable)

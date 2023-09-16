@@ -132,3 +132,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 4445153340089671876, guid: e09f8f140457deb499e68439b5ce796f, type: 3}
   shootingPoint: {fileID: 3163405193230467907}
   weaponItem: {fileID: 11400000, guid: 9308b7c2777821a4bacb62efff92a4c4, type: 2}
+  shootingRange: 100
+  shootableLayer:
+    serializedVersion: 2
+    m_Bits: 8
