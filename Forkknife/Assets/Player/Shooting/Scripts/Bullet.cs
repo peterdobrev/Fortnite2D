@@ -1,75 +1,44 @@
 using System;
-using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class Bullet : NetworkBehaviour//, IBullet
+public class Bullet : MonoBehaviour
 {
-    public NetworkVariable<float> speed = new NetworkVariable<float>(5f);
-    public NetworkVariable<int> damage = new NetworkVariable<int>(1);
-    private NetworkVariable<Vector2> direction = new NetworkVariable<Vector2>();
+    public float speed = 40f;
+    private Vector2 direction = new Vector2();
 
-    private bool hasSpawned = false;
+    private float timeAlive = 5f;
 
-    //private float timeAlive = 5f;
-
-    public override void OnNetworkSpawn()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        hasSpawned = true;
-        base.OnNetworkSpawn();
+        Debug.Log("Bullet collided with: " + collision.gameObject.name);
+        Destroy(gameObject);
     }
 
     void FixedUpdate()
     {
-        if(!hasSpawned) return;
         Move();
-        /*
+
         timeAlive -= Time.deltaTime;
         if (timeAlive < 0)
         {
-            DestroyObjectServerRpc();
+            Destroy(gameObject);
         }
-        */
     }
 
     public void Move()
     {
-        transform.Translate(direction.Value * speed.Value * Time.deltaTime);
-    }
-
-     /*
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (IsServer) // Ensure this logic only happens on the server for authority
-        {
-            NetworkLog.LogInfoServer($"Bullet collided with {collision.gameObject.name}");
-            var damageable = collision.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                NetworkLog.LogInfoServer($"Bullet is being destroyed because it collided with idamageable: {collision.gameObject.name}");
-                DealDamage(damageable);
-                DestroyObjectServerRpc();
-            }
-        }
-    }
-    [ServerRpc]
-    public void DestroyObjectServerRpc(ServerRpcParams rpcParams = default)
-    {
-        GetComponent<NetworkObject>().Despawn(true);
-    }*/
-
-
-    private void DealDamage(IDamageable damageable)
-    {
-        if (damageable != null)
-        {
-            damageable.TakeDamage(damage.Value);
-        }
+        transform.Translate(direction * speed * Time.deltaTime);
     }
 
     public void SetDirection(Vector2 dir)
     {
-        NetworkLog.LogInfoServer($"8. Direction of bullet set - {NetworkObjectId}");
-        direction.Value = dir;
+        Debug.Log($"8. Direction of bullet set");
+        direction = dir;
+    }
+
+    public void OnDestroy()
+    {
+        Debug.Log("Bullet is being destroyed");
     }
 }

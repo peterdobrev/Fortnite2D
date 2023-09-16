@@ -26,6 +26,8 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
 
     public bool FireBullet(Vector3 mousePos)
     {
+        SpawnVisualBulletClientRpc(mousePos);
+
         Vector2 shootingDirection = GetShootingDirection(mousePos);
 
         RaycastHit2D hit = Physics2D.Raycast(shootingPoint.position, shootingDirection, shootingRange, shootableLayer);
@@ -43,6 +45,16 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
 
         return false;
 
+    }
+
+
+    [ClientRpc]
+    private void SpawnVisualBulletClientRpc(Vector3 mousePos)
+    {
+        Debug.Log("Spawning visual bullet");
+        Vector2 shootingDir = GetShootingDirection(mousePos);
+        var bullet = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
+        bullet.GetComponent<Bullet>().SetDirection(shootingDir);
     }
 
     private Vector2 GetShootingDirection(Vector3 mousePos)
