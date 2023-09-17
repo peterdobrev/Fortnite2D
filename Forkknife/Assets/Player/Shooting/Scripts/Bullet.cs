@@ -41,4 +41,9 @@ public class Bullet : MonoBehaviour
     {
         Debug.Log("Bullet is being destroyed");
     }
+
+    public void SetTimeAlive(float time)
+    {
+        timeAlive = time;
+    }
 }

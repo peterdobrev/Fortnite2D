@@ -3277,7 +3277,7 @@ MonoBehaviour:
   width: 20
   height: 20
   cellSize: 4
-  originPosition: {x: 0, y: 0, z: 0}
+  originPosition: {x: -20, y: 0, z: 0}
   wallPrefab: {fileID: 350772030355065547, guid: 678f7f22a348ebe4cad1c3da9ca7b0a8, type: 3}
   floorPrefab: {fileID: 350772030355065547, guid: e1c8e8a9ca263084ea709a90951979d0, type: 3}
   rampPrefab: {fileID: 350772030355065547, guid: e417b7edd2862a24ca189947296de6d8, type: 3}
