@@ -135,4 +135,4 @@ MonoBehaviour:
   shootingRange: 100
   shootableLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 264

@@ -42,7 +42,10 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
             var idamageable = hit.collider.GetComponent<IDamageable>();
             if (idamageable != null)
             {
+                var networkObjectDamageableId = hit.collider.GetComponent<NetworkObject>().NetworkObjectId;
+
                 StartCoroutine(DelayedDamage(idamageable, weaponItem.damage, timeToReachTarget));
+                DelayedDamageClientRpc(networkObjectDamageableId, weaponItem.damage, timeToReachTarget);
                 return true;
             }
         }
@@ -62,6 +65,24 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
         var bullet = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity).GetComponent<Bullet>();
         bullet.SetDirection(shootingDir);
         bullet.SetTimeAlive(autoDestroyBulletTimer);
+    }
+
+    [ClientRpc]
+    private void DelayedDamageClientRpc(ulong targetNetworkObjectId, int damageAmount, float delay)
+    {
+        if (IsServer || IsHost) return;
+
+        NetworkObject targetNetworkObject = NetworkManager.SpawnManager.SpawnedObjects[targetNetworkObjectId];
+
+        if (targetNetworkObject)
+        {
+            IDamageable target = targetNetworkObject.gameObject.GetComponent<IDamageable>();
+            if (target != null)
+            {
+                StartCoroutine(DelayedDamage(target, damageAmount, delay));
+            }
+        }
+
     }
 
     private IEnumerator DelayedDamage(IDamageable target, int damageAmount, float delay)

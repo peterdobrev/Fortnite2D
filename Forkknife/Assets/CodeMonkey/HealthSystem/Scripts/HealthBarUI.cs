@@ -71,11 +71,13 @@ public class HealthBarUI : NetworkBehaviour
         shieldBar.UpdateBar01(healthSystem.GetShieldNormalized());
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         healthSystem.OnHealthChanged -= HealthSystem_OnHealthChanged;
         // Assuming you added this event in your HealthSystem class
         healthSystem.OnShieldChanged -= HealthSystem_OnShieldChanged;
+
+        base.OnDestroy();
     }
 }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
@@ -36,7 +37,19 @@ public class HealingHandler : MonoBehaviour, IActionHandler
     {
         Debug.Log("Timer started!");
         yield return new WaitForSeconds(time);
-        Heal();  
+        HealServerRpc();  
+    }
+
+    [ServerRpc]
+    private void HealServerRpc()
+    {
+        HealClientRpc();
+    }
+
+    [ClientRpc]
+    private void HealClientRpc()
+    {
+        Heal();
     }
 
     private void Heal()

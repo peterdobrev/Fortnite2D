@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7410195963178165001}
   - component: {fileID: 8315676839971397149}
   - component: {fileID: 1954953827756564524}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CameraRecoilFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 5422765527381013409}
   - component: {fileID: 5798782335366842536}
   - component: {fileID: 1488228812147442682}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item Slot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 4636058929951043677}
   - component: {fileID: 6528243756881029581}
   - component: {fileID: 8261922803901733144}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 1294177583968132508}
   - component: {fileID: 837167242986918388}
   - component: {fileID: 7358743602806857471}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8396412714215249911}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7026223465361274268}
   - component: {fileID: 7979495799273870294}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnIncreaseStop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -772,7 +772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8316136892048628901}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -804,7 +804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4249767847931762860}
   - component: {fileID: 3064566660210729829}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnIncreaseStop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1057,7 +1057,7 @@ GameObject:
   - component: {fileID: 5845164409377073277}
   - component: {fileID: 5073175125180804001}
   - component: {fileID: 4408183477519620624}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BgWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1136,7 +1136,7 @@ GameObject:
   - component: {fileID: 6978714771876581319}
   - component: {fileID: 5452541232975334636}
   - component: {fileID: 2874487551615053618}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: DelayedBarIncreasing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1210,7 +1210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 718067446794997235}
   - component: {fileID: 2322706179176995921}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnDecreaseStop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1465,7 +1465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4648091267327674321}
   - component: {fileID: 774265865748062982}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CameraZoomFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1696,7 +1696,7 @@ GameObject:
   - component: {fileID: 7357303826884079527}
   - component: {fileID: 8076824102828905253}
   - component: {fileID: 7015383406952086557}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item Slot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1771,7 +1771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7473120529371227062}
   - component: {fileID: 1186872777906110816}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ShieldsBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2100,7 +2100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6242059546631882135}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slot (3) Healing/Shields
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2133,7 +2133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2094083047637124558}
   - component: {fileID: 1068826125313578906}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_Arm Solver_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2196,7 +2196,7 @@ GameObject:
   - component: {fileID: 5359111624576680170}
   - component: {fileID: 3631797220264911514}
   - component: {fileID: 390469609556935377}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: DelayedBarDecreasing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2270,7 +2270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5495295059522833098}
   - component: {fileID: 8913583664141375610}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnDecreaseStop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2524,7 +2524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1100081350253849480}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BuildingSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2557,7 +2557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4140917772823252149}
   - component: {fileID: 6034834139644502714}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Inventory UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2613,7 +2613,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2609705276029585087}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slot (1) Pickaxe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2646,7 +2646,7 @@ GameObject:
   - component: {fileID: 6207357019341357556}
   - component: {fileID: 1047908150205215724}
   - component: {fileID: 3885538345801966189}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: PercentageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2724,7 +2724,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1548540180297231114}
   - component: {fileID: 1464544163247026808}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HealthBars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2778,7 +2778,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5925116420904016109}
   - component: {fileID: 1131990719502498817}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: IK Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2825,7 +2825,7 @@ GameObject:
   - component: {fileID: 7278893538924926912}
   - component: {fileID: 7505026828576944732}
   - component: {fileID: 488168013432969787}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: DelayedBarDecreasing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2907,12 +2907,13 @@ GameObject:
   - component: {fileID: 2963447937018356423}
   - component: {fileID: 5477606721904737776}
   - component: {fileID: 5447921512766887202}
+  - component: {fileID: 6804094183876971061}
   - component: {fileID: 5674620642694685445}
   - component: {fileID: 5458816460488661640}
   - component: {fileID: -7962239477295514567}
   - component: {fileID: 3115755407397752254}
   - component: {fileID: 5331668940982334912}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character - No Father
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3269,6 +3270,18 @@ MonoBehaviour:
   - {fileID: 8815159023399884502}
   - {fileID: 1948580471454238784}
   inventoryUI: {fileID: 6034834139644502714}
+--- !u!114 &6804094183876971061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4265831250640577336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e9b409d2ab4e045be16302708979b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5674620642694685445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3369,7 +3382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4257129505187112175}
   - component: {fileID: 4937020658586796630}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_Arm Solver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3436,7 +3449,7 @@ GameObject:
   - component: {fileID: 3892208738661838659}
   - component: {fileID: 4705487525339518824}
   - component: {fileID: 5569810578333145444}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: LittleCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3509,7 +3522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5070118639721990805}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3541,7 +3554,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4422954652116983360}
   - component: {fileID: 6687815574660561867}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnIncreaseStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5297,7 +5310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2268363411238320612}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Building Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5331,7 +5344,7 @@ GameObject:
   - component: {fileID: 8826627124761375736}
   - component: {fileID: 6492593014096213359}
   - component: {fileID: 2592964820921318844}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: LittleCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5404,7 +5417,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1438590847616277090}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5437,7 +5450,7 @@ GameObject:
   - component: {fileID: 6515612134637081551}
   - component: {fileID: 6560318433599914791}
   - component: {fileID: 2059450288240341274}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BarFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5512,7 +5525,7 @@ GameObject:
   - component: {fileID: 8462452154399887949}
   - component: {fileID: 8513545872417563799}
   - component: {fileID: 7968750555325848449}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BarBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5585,7 +5598,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8171724347270086774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5621,7 +5634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5014863273128519680}
   - component: {fileID: 5399410769890696563}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5953,7 +5966,7 @@ GameObject:
   - component: {fileID: 9072509683850042046}
   - component: {fileID: 2853115040719675346}
   - component: {fileID: 4195556579628054693}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6054,7 +6067,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3095987154033154638}
   - component: {fileID: 5880545740591402112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_Arm Solver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6121,7 +6134,7 @@ GameObject:
   - component: {fileID: 3522193792560580295}
   - component: {fileID: 1367625936032512939}
   - component: {fileID: 4613290691339937606}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnDecreaseStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8016,7 +8029,7 @@ GameObject:
   - component: {fileID: 1202262859319895199}
   - component: {fileID: 6510899749314214749}
   - component: {fileID: 5920442319602173985}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: PercentageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8094,7 +8107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4715360010846863253}
   - component: {fileID: 950464533506455619}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnIncreaseStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9852,7 +9865,7 @@ GameObject:
   - component: {fileID: 1833019335658710182}
   - component: {fileID: 8026833340418263543}
   - component: {fileID: 6970035839509683075}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BarFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9926,7 +9939,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3662307870299202408}
   - component: {fileID: 8961768447297820316}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_Arm Solver_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9989,7 +10002,7 @@ GameObject:
   - component: {fileID: 1201812066222832140}
   - component: {fileID: 6882411441744621850}
   - component: {fileID: 8981496248290391886}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BgWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10068,7 +10081,7 @@ GameObject:
   - component: {fileID: 1664054950654999630}
   - component: {fileID: 4132916621924754104}
   - component: {fileID: 3957293134698708016}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: BarBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10143,7 +10156,7 @@ GameObject:
   - component: {fileID: 3459936724005058496}
   - component: {fileID: 2413038788062542839}
   - component: {fileID: 6975307067351402480}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: DelayedBarIncreasing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10216,7 +10229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3157226305046654522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ItemSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10250,7 +10263,7 @@ GameObject:
   - component: {fileID: 1932993999314741390}
   - component: {fileID: 9108725719202856348}
   - component: {fileID: 5736971575940659497}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mouse Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10368,7 +10381,7 @@ GameObject:
   - component: {fileID: 6943311135267891839}
   - component: {fileID: 3313848825551579169}
   - component: {fileID: 7225561973803438076}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item Slot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10444,7 +10457,7 @@ GameObject:
   - component: {fileID: 5089904584575336945}
   - component: {fileID: 5851311184730343447}
   - component: {fileID: 5988351792282874989}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10517,7 +10530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1301371128896813929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slot (2) Primary Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10552,7 +10565,7 @@ GameObject:
   - component: {fileID: 3648897047468480427}
   - component: {fileID: 5904210147147425652}
   - component: {fileID: 7559385667104926256}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OnDecreaseStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12826,6 +12839,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pencil
       objectReference: {fileID: 0}
+    - target: {fileID: 8642169914598724024, guid: 99d7603a030f92340afe035df99c71d8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12888,6 +12905,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Building List
       objectReference: {fileID: 0}
+    - target: {fileID: 8642169914598724024, guid: 1e00142a2cb838946983086cdddb55f2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12946,9 +12967,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2432690320168756400, guid: 19e193a50f6501046b52726276461430, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6895068729199319730, guid: 19e193a50f6501046b52726276461430, type: 3}
       propertyPath: m_Name
       value: Pistol - Equippable
+      objectReference: {fileID: 0}
+    - target: {fileID: 6895068729199319730, guid: 19e193a50f6501046b52726276461430, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13016,9 +13045,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 89.166
       objectReference: {fileID: 0}
+    - target: {fileID: 2432690320168756400, guid: a2a523c2fdfb7464796e57dbab4d519e, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6895068729199319730, guid: a2a523c2fdfb7464796e57dbab4d519e, type: 3}
       propertyPath: m_Name
       value: Random Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 6895068729199319730, guid: a2a523c2fdfb7464796e57dbab4d519e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6895068729199319730, guid: a2a523c2fdfb7464796e57dbab4d519e, type: 3}
       propertyPath: m_IsActive
@@ -13042,9 +13079,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8188230066060160055}
     m_Modifications:
+    - target: {fileID: -9112713358631721074, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_Name
       value: fortnite character
+      objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalScale.x
@@ -13110,6 +13155,26 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.11023353
       objectReference: {fileID: 0}
+    - target: {fileID: -5559784385719379605, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3947637994419247029, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3331106662022596299, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3118298416152120057, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2631276252154265238, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -1953129363859243424, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.89835554
@@ -13125,6 +13190,18 @@ PrefabInstance:
     - target: {fileID: -1953129363859243424, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.43926924
+      objectReference: {fileID: 0}
+    - target: {fileID: -1906665623652605775, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -1782567645112884177, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -1075098041625165290, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -485990856666115531, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13146,6 +13223,22 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.75822324
       objectReference: {fileID: 0}
+    - target: {fileID: 170353372575073346, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 386791141387813222, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428990608449525843, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596357972171728719, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2319998805419544334, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -13166,6 +13259,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.392
       objectReference: {fileID: 0}
+    - target: {fileID: 2444725705783489535, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2471920254983572574, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.6304188
@@ -13173,6 +13270,14 @@ PrefabInstance:
     - target: {fileID: 2471920254983572574, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.7762553
+      objectReference: {fileID: 0}
+    - target: {fileID: 3297364353584691495, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157741701538757237, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4257508509235537429, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13182,6 +13287,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.13407445
       objectReference: {fileID: 0}
+    - target: {fileID: 5160630824246572320, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104645892959530005, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6359608522883307179, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661297295306709244, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7905440446968883676, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.004779837
@@ -13189,6 +13310,10 @@ PrefabInstance:
     - target: {fileID: 7905440446968883676, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.9999886
+      objectReference: {fileID: 0}
+    - target: {fileID: 8799080710350565189, guid: 7efd733147ace4549a90f7e3bededddf, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13369,6 +13494,10 @@ PrefabInstance:
     - target: {fileID: 9194301173926436617, guid: 0e7029bef745d9f4a9b3012e32507599, type: 3}
       propertyPath: m_Name
       value: Big Pot - Equippable
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194301173926436617, guid: 0e7029bef745d9f4a9b3012e32507599, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
