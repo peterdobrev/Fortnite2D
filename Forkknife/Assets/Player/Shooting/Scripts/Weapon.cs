@@ -36,7 +36,7 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
             float distanceToTarget = Vector2.Distance(shootingPoint.position, hit.point);
             float timeToReachTarget = distanceToTarget / bulletPrefab.GetComponent<Bullet>().speed; // Assuming bulletSpeed is the speed of the bullet.
 
-            SpawnVisualBulletClientRpc(mousePos, timeToReachTarget);
+            BulletServerRpc(mousePos, timeToReachTarget);
 
             // The ray hit something
             var idamageable = hit.collider.GetComponent<IDamageable>();
@@ -51,15 +51,22 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
         }
         else
         {
-            SpawnVisualBulletClientRpc(mousePos, 1f);
+            BulletServerRpc(mousePos, 1f);
         }
 
         return false;
     }
 
+    [ServerRpc]
+    private void BulletServerRpc(Vector3 mousePos, float autoDestroyBulletTimer)
+    {
+        SpawnVisualBulletClientRpc(mousePos, autoDestroyBulletTimer);
+    }
+
     [ClientRpc]
     private void SpawnVisualBulletClientRpc(Vector3 mousePos, float autoDestroyBulletTimer)
     {
+        SoundManager.instance.PlaySound(weaponItem.shootingSoundName);
         Debug.Log("Spawning visual bullet");
         Vector2 shootingDir = GetShootingDirection(mousePos);
         var bullet = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity).GetComponent<Bullet>();

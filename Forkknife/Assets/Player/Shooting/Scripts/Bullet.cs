@@ -14,6 +14,10 @@ public class Bullet : MonoBehaviour
         Debug.Log("Bullet collided with: " + collision.gameObject.name);
         Destroy(gameObject);
     }
+    private void Awake()
+    {
+        Debug.Log("Bullet spawned");
+    }
 
     void FixedUpdate()
     {

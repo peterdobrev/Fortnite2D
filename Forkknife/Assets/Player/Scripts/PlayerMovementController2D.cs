@@ -73,57 +73,21 @@ public class PlayerMovementController2D : NetworkBehaviour
         inputHistory.Add(newInput);
 
         HandleMovement(newInput);
-        //HandleMovementServerRpc(newInput.moveDirection, newInput.isJumpPressed, newInput.isSprinting, newInput.sequenceNumber);
     }
+
 
     private void HandleMovement(InputState input)
     {
         float moveSpeedModified = GetMoveSpeed() * (input.isSprinting ? sprintSpeedMultiplier : 1f);
         rb.velocity = new Vector2(input.moveDirection * moveSpeedModified, rb.velocity.y);
+        //SoundManager.instance.PlaySound("Moving");
 
         if (input.isJumpPressed && isGrounded)
         {
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            SoundManager.instance.PlaySound("Jump");
         }
     }
-
-/*
-    [ServerRpc]
-    private void HandleMovementServerRpc(float moveDirection, bool isJumpPressed, bool isSprinting, uint sequenceNumber, ServerRpcParams rpcParams = default)
-    {
-        InputState movementInput = new InputState
-        {
-            moveDirection = moveDirection,
-            isJumpPressed = isJumpPressed,
-            isSprinting = isSprinting,
-            sequenceNumber = inputSequenceNumber
-        };
-
-        HandleMovement(movementInput);
-
-        // Send back the last processed input sequence number
-        ConfirmProcessedInputClientRpc(sequenceNumber, 
-            new ClientRpcParams 
-            { 
-                Send = new ClientRpcSendParams 
-                { 
-                    TargetClientIds = new List<ulong> { rpcParams.Receive.SenderClientId} 
-                },
-                Receive = new ClientRpcReceiveParams()
-                
-            });;
-    }
-
-    [ClientRpc]
-    private void ConfirmProcessedInputClientRpc(uint lastProcessedInput, ClientRpcParams rpcParams)
-    {
-        if(rpcParams.Send.TargetClientIds.Contains(NetworkObjectId))
-        {
-            // Remove all confirmed inputs up to and including the given sequence number
-            inputHistory.RemoveAll(input => input.sequenceNumber <= lastProcessedInput);
-        }
-    }*/
-
 
     private void HandleJumpAnimation()
     {

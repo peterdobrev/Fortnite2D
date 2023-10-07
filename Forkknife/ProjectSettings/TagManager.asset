@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - BuildSystem
+  - SoundManager
   layers:
   - Default
   - TransparentFX
