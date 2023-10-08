@@ -36,7 +36,7 @@ public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
 
     private void Awake()
     {
-        CurrentState = PlayerState.Shooting;
+        CurrentState = PlayerState.Building;
 
         buildingHandler = GetComponent<BuildingHandler>();
         shootingHandler = GetComponent<ShootingHandler>();
@@ -127,6 +127,7 @@ public class PlayerActionController2D : NetworkBehaviour, IGetHealthSystem
             shootingHandler.ActiveSlot = activeSlot;
             shootingHandler.ConfigureWeapon();
             CurrentState = PlayerState.Shooting;
+            SoundManager.instance.PlaySound("WeaponSwitch");
         });
         onHealingMode.AddListener(() =>
         {

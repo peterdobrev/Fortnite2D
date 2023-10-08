@@ -7,7 +7,6 @@ public class Item : ScriptableObject
     public int itemId; // Unique ID for each item
     public string itemName = "New Item";
     public Sprite icon = null; // Icon to be displayed in the inventory
-    public GameObject equippableObject = null;
 
     public virtual void Use()
     {

@@ -36,6 +36,7 @@ public class HealingHandler : MonoBehaviour, IActionHandler
     private IEnumerator HealingWithDelay(float time)
     {
         Debug.Log("Timer started!");
+        SoundManager.instance.PlaySound(currentHealing.healingItem.healingSound);
         yield return new WaitForSeconds(time);
         HealServerRpc();  
     }

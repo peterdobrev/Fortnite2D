@@ -15,8 +15,8 @@ MonoBehaviour:
   itemId: 4
   itemName: Pistol
   icon: {fileID: 21300000, guid: 37d93650aba60514ebde3c5bd6b8ca80, type: 3}
-  equippableObject: {fileID: 6895068729199319730, guid: 19e193a50f6501046b52726276461430, type: 3}
   fireRate: 1
   bulletCapacity: 30
   damage: 25
   shootingSoundName: Pistol
+  weaponType: 3

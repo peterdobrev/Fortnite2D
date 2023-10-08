@@ -20,6 +20,15 @@ public class PlayerMovementController2D : NetworkBehaviour
 
     #endregion
 
+    #region
+    private float walkingSfxTimer = 0.5f;
+    private float remainingTimer = 0;
+
+    private Vector2 lastSoundPosition;
+    private float minDistanceForSound = 1.0f; 
+
+    #endregion
+
     #region Movement Input Settings For Network
 
     private struct InputState
@@ -80,13 +89,36 @@ public class PlayerMovementController2D : NetworkBehaviour
     {
         float moveSpeedModified = GetMoveSpeed() * (input.isSprinting ? sprintSpeedMultiplier : 1f);
         rb.velocity = new Vector2(input.moveDirection * moveSpeedModified, rb.velocity.y);
-        //SoundManager.instance.PlaySound("Moving");
+
+        /*// Calculate the distance moved since the last sound was played
+      float distanceMoved = Mathf.Abs(rb.position.x - lastSoundPosition.x);
+
+       remainingTimer -= Time.deltaTime;
+
+       if (remainingTimer < 0 && distanceMoved > minDistanceForSound)
+       {
+           MovementSoundServerRpc();
+           remainingTimer = walkingSfxTimer;
+           lastSoundPosition = rb.position;  // Update the last sound position
+       }*/
 
         if (input.isJumpPressed && isGrounded)
         {
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             SoundManager.instance.PlaySound("Jump");
         }
+    }
+
+    [ServerRpc]
+    private void MovementSoundServerRpc()
+    {
+        MovementSoundClientRpc();
+    }
+
+    [ClientRpc]
+    private void MovementSoundClientRpc()
+    {
+        SoundManager.instance.PlaySound("Moving");
     }
 
     private void HandleJumpAnimation()

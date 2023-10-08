@@ -7,6 +7,7 @@ public class WeaponItem : Item
     public int bulletCapacity = 30;
     public int damage = 10;
     public string shootingSoundName = string.Empty;
+    public WeaponType weaponType;
 
     public override void Use()
     {

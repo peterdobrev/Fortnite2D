@@ -15,8 +15,7 @@ MonoBehaviour:
   itemId: 1
   itemName: Big Shield
   icon: {fileID: 21300000, guid: 005cb2c360ff12640a2946b7ff63d79f, type: 3}
-  equippableObject: {fileID: 9194301173926436617, guid: 0e7029bef745d9f4a9b3012e32507599, type: 3}
-  droppableObject: {fileID: 4071330915625575712, guid: 641ffca676a17ff408899c2eaf795fee, type: 3}
   healthRecovered: 50
   timeToUse: 5
   healingType: 1
+  healingSound: BigShield

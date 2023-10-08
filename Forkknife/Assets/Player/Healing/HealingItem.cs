@@ -6,6 +6,7 @@ public class HealingItem : Item
     public int healthRecovered = 10;
     public float timeToUse = 1f;
     public HealingType healingType = HealingType.Health;
+    public string healingSound = string.Empty;
 
     public override void Use()
     {

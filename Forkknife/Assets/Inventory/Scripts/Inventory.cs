@@ -18,6 +18,7 @@ public class Inventory : NetworkBehaviour
     private void Start()
     {
         DeactivateAllSlots();
+        DeactivateAllChildrenInSlotsServerRpc();
     }
 
     // Client calls this method to request slot change
@@ -60,6 +61,32 @@ public class Inventory : NetworkBehaviour
         {
             itemSlots[i].SetActive(false);
         }
+    }
+
+    [ServerRpc]
+    private void DeactivateAllChildrenInSlotsServerRpc()
+    {
+        DeactivateAllChildrenInSlotsClientRpc();
+    }
+
+    [ClientRpc]
+    private void DeactivateAllChildrenInSlotsClientRpc()
+    {
+        DeactivateAllChildrenInSlots();
+    }
+
+    //Deactivates all items in a given slot except for the first one
+    private void DeactivateAllChildrenInSlots()
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            var slot = itemSlots[i].transform;
+            for (int j = 1; j < slot.childCount; j++)
+            {
+                slot.GetChild(j).gameObject.SetActive(false);
+            }
+        }
+
     }
 
     private void UpdateUI()

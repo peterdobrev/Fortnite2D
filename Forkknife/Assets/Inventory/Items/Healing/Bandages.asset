@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afd280203fb41341a610658773d08f6, type: 3}
   m_Name: Bandages
   m_EditorClassIdentifier: 
+  itemId: 0
   itemName: Bandages
   icon: {fileID: 21300000, guid: d9f392c5c5eaf544e987ca23ebf9de0d, type: 3}
-  maxStackSize: 15
   healthRecovered: 15
   timeToUse: 3.5
+  healingType: 0
+  healingSound: Bandages

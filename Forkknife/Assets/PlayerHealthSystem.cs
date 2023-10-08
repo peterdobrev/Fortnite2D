@@ -21,12 +21,15 @@ public class PlayerHealthSystem : MonoBehaviour, IDamageable
 
     private void Die(object sender, System.EventArgs e)
     {
-        KillPlayer();
+        SoundManager.instance.PlaySound("Die");
+        KillPlayerServerRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void KillPlayer()
+    private void KillPlayerServerRpc()
     {
         GetComponent<NetworkObject>().Despawn(true);
     }
+
+
 }

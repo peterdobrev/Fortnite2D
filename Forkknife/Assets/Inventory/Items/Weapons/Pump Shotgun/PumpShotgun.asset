@@ -15,8 +15,8 @@ MonoBehaviour:
   itemId: 0
   itemName: Pump Shotgun
   icon: {fileID: 21300000, guid: e982c48885ede6241bc785cb46f44ead, type: 3}
-  equippableObject: {fileID: 6843254089644302189, guid: b675eac3f4136d046b1438b42bd76375, type: 3}
   fireRate: 0.7
   bulletCapacity: 5
-  damage: 28
+  damage: 92
   shootingSoundName: Shotgun
+  weaponType: 1

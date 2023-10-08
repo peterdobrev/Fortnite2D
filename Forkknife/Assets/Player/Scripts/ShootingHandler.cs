@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,21 +7,41 @@ public class ShootingHandler : NetworkBehaviour, IActionHandler
 {
     public GameObject ActiveSlot { get; set; }
     private Weapon currentWeapon;
+    private bool canShoot;
 
     [SerializeField] private IKControl ikControl; // Drag your IKControl component here in the inspector
     [SerializeField] private float recoilStrength = 0.5f;
 
     public UnityEvent onShoot;
+    public UnityEvent onShotgunShoot;
+    public UnityEvent onARShoot;
+    public UnityEvent onPistolShoot;
+    public UnityEvent onSniperShoot;
+
+    private void Awake()
+    {
+        onShoot.AddListener(InvokeSpecificWeaponShootEvent);
+    }
 
     public void ConfigureWeapon()
     {
+        canShoot = false;
         currentWeapon = ActiveSlot.GetComponentInChildren<Weapon>();
+        StartCoroutine(EnableShootingAfterDelay(0.5f)); 
+    }
+
+    private IEnumerator EnableShootingAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canShoot = true;
     }
 
     public void HandleInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (!canShoot) return;
+
             FireBulletServerRpc(CodeMonkey.Utils.UtilsClass.GetMouseWorldPosition());
         }
     }
@@ -63,6 +84,33 @@ public class ShootingHandler : NetworkBehaviour, IActionHandler
         }
 
         ikControl.ApplyRecoil(-recoilDirection * recoilStrength);
+    }
+
+    private WeaponType GetWeaponType()
+    {
+        return currentWeapon.weaponItem.weaponType;
+    }
+
+    private void InvokeSpecificWeaponShootEvent()
+    {
+        var weapon = GetWeaponType();
+        switch (weapon)
+        {
+            case WeaponType.AR:
+                onARShoot.Invoke();
+                break;
+            case WeaponType.Sniper:
+                onSniperShoot.Invoke();
+                break;
+            case WeaponType.Pistol:
+                onPistolShoot.Invoke();
+                break;
+            case WeaponType.Shotgun:
+                onShotgunShoot.Invoke();
+                break;
+            default: break;
+            
+        }
     }
 
 }

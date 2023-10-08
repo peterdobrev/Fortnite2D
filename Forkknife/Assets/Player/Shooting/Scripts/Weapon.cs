@@ -36,7 +36,7 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
             float distanceToTarget = Vector2.Distance(shootingPoint.position, hit.point);
             float timeToReachTarget = distanceToTarget / bulletPrefab.GetComponent<Bullet>().speed; // Assuming bulletSpeed is the speed of the bullet.
 
-            BulletServerRpc(mousePos, timeToReachTarget);
+            SpawnVisualBulletClientRpc(mousePos, timeToReachTarget);
 
             // The ray hit something
             var idamageable = hit.collider.GetComponent<IDamageable>();
@@ -51,16 +51,10 @@ public class Weapon : NetworkBehaviour, IWeapon, IGetItem
         }
         else
         {
-            BulletServerRpc(mousePos, 1f);
+            SpawnVisualBulletClientRpc(mousePos, 1f);
         }
 
         return false;
-    }
-
-    [ServerRpc]
-    private void BulletServerRpc(Vector3 mousePos, float autoDestroyBulletTimer)
-    {
-        SpawnVisualBulletClientRpc(mousePos, autoDestroyBulletTimer);
     }
 
     [ClientRpc]

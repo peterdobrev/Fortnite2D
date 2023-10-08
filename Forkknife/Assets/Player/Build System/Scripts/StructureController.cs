@@ -121,6 +121,8 @@ public class StructureController : MonoBehaviour
         GameObject structureGameObject = Instantiate(structurePrefab, instantiatePosition, quaternion);
         structureGameObject.GetComponent<NetworkObject>().Spawn();
 
+        SoundManager.instance.PlaySound("Building");
+
         Building buildingComponent = structureGameObject.GetComponent<Building>();
         buildingComponent.OnBuildingDestroyed += HandleBuildingDestruction;
 
@@ -141,6 +143,7 @@ public class StructureController : MonoBehaviour
             {
                 Destroy(structureGameObject);
                 structureGameObject.GetComponent<NetworkObject>().Despawn();
+                SoundManager.instance.PlaySound("DestroyedBuilding");
             }
             else
             {
